@@ -1,6 +1,7 @@
 //Try to create a promisified version of setTimeOut
 // fetch
 //fs.FileRead
+const fs=require('fs')
 
 const promise=new Promise((resolve, reject)=>{
     setTimeout(() => {
@@ -15,3 +16,11 @@ const promise=new Promise((resolve, reject)=>{
 })
 
 promise.then((data)=>console.log(data))
+
+
+//fs read
+
+
+let content=fs.readFileSync("./b.txt","utf8");
+console.log(content);
+

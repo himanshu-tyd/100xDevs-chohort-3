@@ -1,4 +1,3 @@
-const { exit } = require("process")
 
 
     console.log('hi there')
