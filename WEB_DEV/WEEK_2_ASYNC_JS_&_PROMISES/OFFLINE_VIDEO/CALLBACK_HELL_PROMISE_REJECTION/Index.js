@@ -35,6 +35,8 @@ function setTimeoutPromisefied(time) {
   });
 }
 
+
+//syntantic sugar
 async function sovle() {
   console.log("hi");
  await setTimeoutPromisefied(1000);
