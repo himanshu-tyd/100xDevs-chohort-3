@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input placeholder="Enter Task" / >
+    <button type="button" onclick="addTodo()">Add Todos</button>
+    <button type="button" onclick="deteteFirstTodo()">Delete First Todos</button>
+    <button type="button" onclick="deleteLastTodo()">Delete Last Todos</button>
+    <div id="todos"></div>
+
+    <script>
+      let todos = [];
+      function addTodo() {
+        todos.push({
+          title: document.querySelector("input").value,
+        });
+
+        render();
+      }
+
+      //detete first todo
+
+      function deteteFirstTodo(){
+        todos.splice(0,1)
+        render()
+      }
+
+      //detete function
+      function deleteLastTodo() {
+        todos.pop()
+        render();
+      }
+
+      //createTodoCompent()
+
+      function createTodoCompent(todo) {
+        const divEl = document.createElement("div");
+        const h3El = document.createElement("h3");
+        const button = document.createElement("button");
+
+        button.innerHTML = "delete";
+        h3El.innerHTML = todo.title;
+        h3El.appendChild(button);
+
+        divEl.append(h3El);
+
+        return divEl;
+      }
+
+      //render function
+      function render() {
+        document.querySelector("#todos").innerHTML = "";
+        for (let i = 0; i < todos.length; i++) {
+          const element = createTodoCompent(todos[i]);
+          document.querySelector("#todos").appendChild(element);
+        }
+      }
+    </script>
+  </body>
+</html>
