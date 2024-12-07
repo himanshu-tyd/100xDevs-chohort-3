@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script defer>
+      const sendRequest = async () => {
+        const a = document.getElementById("a").value;
+        const b = document.getElementById("b").value;
+        try {
+          const res = await fetch("http://localhost:3001/sum", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            boyd: JSON.stringify({ a: a, b: b }),
+          });
+
+          if (!res.ok) {
+            throw new Error("something get wrong");
+          }
+
+          const data = await res.json();
+
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <input id="a" type="text" placeholder="First Number" />
+    <input id="b" type="text" placeholder="Second Number" />
+    <button onclick="sendRequest()">Find sum</button>
+  </body>
+</html>
