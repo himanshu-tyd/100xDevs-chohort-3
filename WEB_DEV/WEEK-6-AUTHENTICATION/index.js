@@ -1,6 +1,12 @@
-import express from "express";
-import crypto from "crypto";
+//here i change storing data into in memory for i gave user to token that contain data of the user and we need to authenticate user we can use this token to get user data on the server 
 
+//here we don't need to fit backend database
+
+import express from "express";
+import jwt from 'jsonwebtoken'
+
+
+const JWT_SECRET='MYNAMEISHIMANSHU'
 const app = express();
 const port = 3000;
 
@@ -29,6 +35,7 @@ app.post("/signin", (req, res) => {
 
   let user = null;
 
+
   userArry.find((u, index) => {
     if (u.username == username && u.password == password) {
       user = u;
@@ -39,33 +46,41 @@ app.post("/signin", (req, res) => {
     return res.json({ message: "user not found" });
   }
 
-  const token = generateToken();
+ const token=jwt.sign({user},JWT_SECRET)
 
-  user.token = token;
 
-  res.json({ user, token }).end();
+  if(!token){
+    return res.json({message:'token not generated'})
+  }
+
+  // const token = generateToken();  
+
+  // user.token = token;
+
+  res.json({ user,jwt_token:token}).end();
 });
 
 
 
 //Authenticate user End-Point 
 app.get("/me", (req, res) => {
-  const headerToken = req.headers["token"];
+
+  const jwtTokne=req.headers['jwt']
+  const decoded=jwt.verify(jwtTokne, JWT_SECRET)
+  
+  console.log(decoded)
 
   let user = null;
 
   userArry.find((u) => {
-    if (u.token !== headerToken) {
-      res.json({ message: "You are not Authorized " });
+    if (u.token !== decoded.username) {
+      return res.json({ message: "You are not Authorized " });
     }else{
       user=u
     }
   });
 
   res.json({message: 'You are login' , user }).end()
-
-
-
 });
 
 app.get("/users", (req, res) => {
@@ -77,4 +92,4 @@ app.listen(port, () => {
 });
 
 //Helpers functions
-const generateToken = () => crypto.randomBytes(128).toString("base64");
+// const generateToken = () => crypto.randomBytes(128).toString("base64");
