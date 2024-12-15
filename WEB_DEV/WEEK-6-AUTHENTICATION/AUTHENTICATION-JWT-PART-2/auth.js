@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "./index.js";
 
 export const isAuthenticate = (req, res, next) => {
-  const userToken = req.headers.jwt;
+  const userToken = req.headers['jwt'];
 
   const decoded = jwt.verify(userToken, JWT_SECRET);
 

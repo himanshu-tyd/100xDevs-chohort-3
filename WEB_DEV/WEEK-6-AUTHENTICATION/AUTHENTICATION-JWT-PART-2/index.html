@@ -1,29 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Auth test</title>
-</head>
-<body>
-    <div>
-        Signup
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <button onclick="signup()">Submit</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <style>
+      .hidden {
+        display: hidden;
+      }
+      .show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="form1">
+      Signup
+      <input id="username" type="text" name="username" placeholder="Username" />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+      <button onclick="signup()">SignUp</button>
+    </div>
+    <div id="form2">
+      Signin
+      <input id="username" type="text" name="username" placeholder="Username" />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+      <button onclick="signin()">SignIn</button>
+    </div>
+    <div id="user-info" class="hidden">
+      User information:
+      <div id="information"></div>
     </div>
     <div>
-        Signin
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <button onclick="signin()">Submit</button>
+      <button onclick="logout()">Logout</button>
     </div>
-    <div>
-        User information: 
-        <div id="information"></div>
-    </div>
-    <div>
-        <button onclick="logout()">Logout</button>
-    </div>
-</body>
+
+    <script>
+      //get  user info
+      const userInfoEl = document.querySelector("#user-info");
+      const formRegisteEl = document.querySelector("#form1");
+      const formLoginEl = document.querySelector("#form2");
+
+      if (!localStorage.getItem("jwt")) {
+        formRegisteEl.setAttribute("style", "display: hidden");
+        formLoginEl.setAttribute("style", "display: hidden");
+      } else {
+        userInfoEl.classList.add("show");
+      }
+
+      function getData() {
+        const username = document.querySelector("#username").value;
+        const password = document.querySelector("#password").value;
+
+        return { username, password };
+      }
+
+      //inital call
+
+      async function getUserInfo() {
+        const token = localStorage.getItem("jwt");
+
+        if (!token) {
+          return alert("login require");
+        }
+
+        const res = await axios.get("http://localhost:3000/me", {
+          headers: {
+            jwt: token,
+          },
+        });
+        console.log(res.data);
+
+        if (!res.data) {
+          alert("failed to get user data");
+        }
+        const infoEl = document.querySelector("#information");
+        const spanEl = document.createElement("span");
+
+        spanEl.innerHTML = JSON.stringify(res.data.user);
+
+        infoEl.appendChild(spanEl);
+
+        userInfoEl.classList.add("show");
+      }
+
+      getUserInfo();
+
+      //signup
+      async function signup() {
+        const user = getData();
+
+        const res = await axios.post("http://localhost:3000/signup", user);
+
+        console.log(res.data);
+      }
+
+      //signin
+      async function signin() {
+        const user = getData();
+
+        const res = await axios.post("http://localhost:3000/signin", user);
+
+        console.log(res.data);
+
+        if (!res.data.jwt_token) {
+          alert("failed to get generate token");
+        }
+
+        window.localStorage.setItem("jwt", res.data.jwt_token);
+
+        const infoEl = document.querySelector("#information");
+        const spanEl = document.createElement("span");
+
+        spanEl.innerHTML = res.data.user;
+
+        infoEl.appendChild(spanEl);
+      }
+    </script>
+  </body>
 </html>
