@@ -8,7 +8,7 @@ export const isAuthenticate = async (req, res ,next) => {
       return res.json({ success: false, message: "You are not authenticate" });
     }
 
-    const decode = await jwt.verify(myJwt, process.env.JWT_SECRET);
+    const decode =jwt.verify(myJwt, process.env.JWT_SECRET);
  
 
     if (!decode) {

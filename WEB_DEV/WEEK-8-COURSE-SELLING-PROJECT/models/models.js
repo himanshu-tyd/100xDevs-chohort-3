@@ -24,7 +24,10 @@ const courseSchema = new Schema({
 
 const purchaseSchema = new Schema({
   userId: Types.ObjectId,
-  courseId: Types.ObjectId,
+  courseId: {
+    type: Types.ObjectId,
+    rel: "course",
+  },
 });
 
 const UserModel = model("user", userSchema);
