@@ -1,17 +1,17 @@
 import { model, Schema, Types } from "mongoose";
 
 const userSchema = new Schema({
+  firstName:String,
+  lastName:String,
   email: { type: String, unique: true },
-  fullname: {
-    type: String,
-  },
   password: String,
 });
 
 const adminSchema = new Schema({
   email: { type: String, unique: true },
+  firstName:String,
+  lastName:String,
   password: String,
-  fullname: String,
 });
 
 const courseSchema = new Schema({

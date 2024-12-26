@@ -4,9 +4,9 @@ import { GenerateCookie } from "../utils/verify.js";
 import { purchase } from "./course.controller.js";
 
 export const signup = async (req, res) => {
-  const { email, password, fullname } = req.body;
+  const { email, password, firstName, lastName } = req.body;
 
-  if (!email || !password || !fullname) {
+  if (!email || !password || !firstName || lastName) {
     return res.json({
       success: false,
       message: "please provide valid details.",
@@ -100,7 +100,7 @@ export const myCourse = async (req, res) => {
   return res.json({
     success: false,
     message: "Course found sucessfully ",
-    data: {courseIds, courseInfo}
+    data: { courseIds, courseInfo },
   });
 };
 

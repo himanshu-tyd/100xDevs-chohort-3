@@ -1,9 +1,12 @@
 import { AdminModel, CourseModel } from "../models/models.js";
+import { generateHash } from "../utils/helper.js";
 
 export const signup = async (req, res) => {
-  const { email, password, fullname } = req.body;
+  const { email, password, firstName, lastName, role } = req.body;
 
-  if (!email || !password || !fullname) {
+  if(role!=='admin') return res.json({success:false, message: '!opps somethin get wrong'})
+
+  if (!email || !password || !firstName || !lastName) {
     return res.json({
       success: false,
       message: "please provide valid details.",
@@ -17,8 +20,9 @@ export const signup = async (req, res) => {
   }
 
   const newAdmin = await AdminModel.create({
+    firstName,
+    lastName,
     email,
-    fullname,
     password: await generateHash(password),
   });
 
