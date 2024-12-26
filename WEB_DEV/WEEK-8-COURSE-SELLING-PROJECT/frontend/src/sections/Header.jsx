@@ -1,8 +1,11 @@
 import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
+import { getContextData } from "../context/AuthContexProvider";
 
 const Header = () => {
+  const { user } = getContextData();
+
   return (
     <header className="w-full flex-center  items-center text-dusty font-clash ">
       <nav className=" w-full  flex justify-between items-center py-4 px-8 ">
@@ -19,15 +22,26 @@ const Header = () => {
           <a href="#">Contact</a>
         </div>
 
-        <Link to="/signup">
-          <Button
-            lable={"Sing Up"}
-            icon={<HiArrowRight />}
-            containerClass={
-              "border border-gray  rounded-full hover:bg-dark hover:text-white"
-            }
-          />
-        </Link>
+        {user ? (
+          <div>
+            <Button
+              lable={"Logout"}
+              containerClass={
+                "border border-gray  rounded-full hover:bg-dark hover:text-white"
+              }
+            />
+          </div>
+        ) : (
+          <Link to="/signup">
+            <Button
+              lable={"Sing Up"}
+              icon={<HiArrowRight />}
+              containerClass={
+                "border border-gray  rounded-full hover:bg-dark hover:text-white"
+              }
+            />
+          </Link>
+        )}
       </nav>
     </header>
   );

@@ -2,14 +2,18 @@ import { useState } from "react";
 import { signUpValidation } from "../utils/helper";
 import axios from "axios";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const useSignUp = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const signUp = async (formData) => {
     const isValid = signUpValidation(formData);
 
     if (!isValid) return;
+
+    console.log(formData.role);
 
     try {
       setLoading(true);
@@ -22,7 +26,31 @@ const useSignUp = () => {
           role: formData.role,
         });
 
-        console.log(res.data);
+        if(!res.data.success){
+          return toast.error(res.data.message)
+        }
+
+        toast.success(res.data.message);
+        navigate("/signin");
+        setLoading(false);
+      }
+
+      if (formData.role == "user") {
+        const res = await axios.post("/api/users/signup", {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        });
+        
+        if(!res.data.success){
+          return toast.error(res.data.message)
+        }
+
+        toast.success(res.data.message);
+        navigate("/signin");
+        setLoading(false);
       }
     } catch (e) {
       console.log(e);

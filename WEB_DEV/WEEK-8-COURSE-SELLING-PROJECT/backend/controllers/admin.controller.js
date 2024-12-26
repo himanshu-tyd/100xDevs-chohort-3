@@ -1,10 +1,12 @@
 import { AdminModel, CourseModel } from "../models/models.js";
-import { generateHash } from "../utils/helper.js";
+import { compareHash, generateHash } from "../utils/helper.js";
+import { GenerateCookie } from "../utils/verify.js";
 
 export const signup = async (req, res) => {
   const { email, password, firstName, lastName, role } = req.body;
 
-  if(role!=='admin') return res.json({success:false, message: '!opps somethin get wrong'})
+  if (role !== "admin")
+    return res.json({ success: false, message: "!opps somethin get wrong" });
 
   if (!email || !password || !firstName || !lastName) {
     return res.json({
@@ -16,7 +18,10 @@ export const signup = async (req, res) => {
   const user = await AdminModel.findOne({ email });
 
   if (user) {
-    return res.json({ success: false, message: "Admin Created Successfully " });
+    return res.json({
+      success: false,
+      message: "You already have an account on this email ",
+    });
   }
 
   const newAdmin = await AdminModel.create({
@@ -38,11 +43,17 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
-  if (!email || !password) {
+  if ((!email || !password, !role)) {
     return res.json({ success: false, message: "All field are required" });
   }
+
+  if (role !== "admin")
+    return res.json({
+      success: false,
+      message: "You don't have access to this",
+    });
 
   const admin = await AdminModel.findOne({ email });
 
@@ -62,7 +73,12 @@ export const signin = async (req, res) => {
 
   GenerateCookie(admin._id, res);
 
-  res.json({ success: true, message: "Admin Login successfully", data: admin });
+  res.json({
+    success: true,
+    message: "Admin Login successfully",
+    data: admin,
+    role: role,
+  });
 };
 
 export const createCourse = async (req, res) => {

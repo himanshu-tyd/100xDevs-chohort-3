@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const isAuthenticate = async (req, res ,next) => {
+export const isAuthenticate = async (req, res, next) => {
   try {
     const myJwt = await req.cookies.jwtToken;
 
@@ -8,18 +8,15 @@ export const isAuthenticate = async (req, res ,next) => {
       return res.json({ success: false, message: "You are not authenticate" });
     }
 
-    const decode =jwt.verify(myJwt, process.env.JWT_SECRET);
- 
+    const decode = jwt.verify(myJwt, process.env.JWT_SECRET);
 
     if (!decode) {
       return res.json({ success: false, message: "You don't have access" });
     }
 
+    req.userId = decode.userId;
 
-    req.userId=decode.userId
-
-    next()
-
+    next();
   } catch (error) {
     res.json({ success: false, message: "opps somethig went wrong", error });
   }

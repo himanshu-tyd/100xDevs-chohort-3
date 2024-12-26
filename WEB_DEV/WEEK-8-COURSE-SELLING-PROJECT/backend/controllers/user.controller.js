@@ -4,9 +4,12 @@ import { GenerateCookie } from "../utils/verify.js";
 import { purchase } from "./course.controller.js";
 
 export const signup = async (req, res) => {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, role } = req.body;
 
-  if (!email || !password || !firstName || lastName) {
+  if (role !== "user")
+    return res.json({ success: false, message: "!opps somethin get wrong" });
+
+  if (!email || !password || !firstName || !lastName) {
     return res.json({
       success: false,
       message: "please provide valid details.",
@@ -16,12 +19,16 @@ export const signup = async (req, res) => {
   const user = await UserModel.findOne({ email });
 
   if (user) {
-    return res.json({ success: false, message: "user alreay exits " });
+    return res.json({
+      success: false,
+      message: "You already have an account ",
+    });
   }
 
   const newUser = await UserModel.create({
     email,
-    fullname,
+    firstName,
+    lastName,
     password: await generateHash(password),
   });
 
@@ -37,15 +44,19 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
-  if (!email || !password) {
+  if ((!email || !password, !role)) {
     return res.json({ success: false, message: "All field are required" });
   }
 
-  const user = await UserModel.findOne({ email });
+  if (role !== "user")
+    return res.json({
+      success: false,
+      message: "You dont' have access of this",
+    });
 
-  console.log(user);
+  const user = await UserModel.findOne({ email });
 
   if (!user) {
     return res.json({ success: false, message: "Invalid creadintials." });
@@ -63,7 +74,12 @@ export const signin = async (req, res) => {
 
   GenerateCookie(user._id, res);
 
-  res.json({ success: true, message: "Sigin succesfully", data: user });
+  res.json({
+    success: true,
+    message: "Sigin succesfully",
+    data: user,
+    role: role,
+  });
 };
 
 export const myCourse = async (req, res) => {

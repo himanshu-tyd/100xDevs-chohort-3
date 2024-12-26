@@ -2,11 +2,13 @@ import React from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import useSignUp from "../hooks/useSignUp";
+import { RiLoader2Line } from "react-icons/ri";
+import CustomCard from "./CustomCard";
 
 const SignUp = () => {
-  const { signUp } = useSignUp();
+  const { signUp, loading } = useSignUp();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = new FormData(e.target);
@@ -19,12 +21,12 @@ const SignUp = () => {
       role: form.get("role"),
     };
 
-     signUp(formValues);
+    await signUp(formValues);
   };
 
   return (
     <div className="w-full h-screen flex items-center justify-center ">
-      <div className="px-4 py-2 shadow-md rounded-lg sm:w-1/3 w-full ">
+      <CustomCard className="px-4 py-2 shadow-md rounded-lg sm:w-1/3 w-full ">
         <h4 className="text-center font-clash-bold border-b pb-2 ">Sign Up</h4>
         <form onSubmit={handleSubmit} className="flex flex-col mt-5">
           <div className="flex  items-center gap-5 ">
@@ -71,8 +73,15 @@ const SignUp = () => {
 
           <div className="mt-6 flex items-center justify-between">
             <Button
+              disabled={loading}
               type={"submit"}
-              lable={"SignUp"}
+              lable={
+                loading ? (
+                  <RiLoader2Line className="animate-spin text-[18px] " />
+                ) : (
+                  "SignUp"
+                )
+              }
               containerClass={
                 "bg-dark text-white hover:bg-yellow hover:text-dark  rounded-full u tracking-[1px] font-clash-light "
               }
@@ -90,7 +99,7 @@ const SignUp = () => {
             </small>
           </div>
         </form>
-      </div>
+      </CustomCard>
     </div>
   );
 };
