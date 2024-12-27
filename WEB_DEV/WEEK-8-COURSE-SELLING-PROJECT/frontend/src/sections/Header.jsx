@@ -2,9 +2,16 @@ import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { getContextData } from "../context/AuthContexProvider";
+import { toast } from "sonner";
 
 const Header = () => {
-  const { user } = getContextData();
+  const { user, setUser } = getContextData();
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user')
+    toast.success("Logout successfuly")
+  };
 
   return (
     <header className="w-full flex-center  items-center text-dusty font-clash ">
@@ -23,7 +30,7 @@ const Header = () => {
         </div>
 
         {user ? (
-          <div>
+          <div onClick={handleLogout}>
             <Button
               lable={"Logout"}
               containerClass={
@@ -32,7 +39,7 @@ const Header = () => {
             />
           </div>
         ) : (
-          <Link to="/signup">
+          <Link to="/signin">
             <Button
               lable={"Sing Up"}
               icon={<HiArrowRight />}
