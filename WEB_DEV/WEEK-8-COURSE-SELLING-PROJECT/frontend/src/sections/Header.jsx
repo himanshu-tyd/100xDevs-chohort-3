@@ -9,12 +9,12 @@ const Header = () => {
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('user')
-    toast.success("Logout successfuly")
+    localStorage.removeItem("user");
+    toast.success("Logout successfuly");
   };
 
   return (
-    <header className="w-full flex-center  items-center text-dusty font-clash ">
+    <header className="w-full flex-center  items-center text-dusty font-clash">
       <nav className=" w-full  flex justify-between items-center py-4 px-8 ">
         <div className="flex items-center gap-2 ">
           <span className=" border-yellow border-[4px] px-1 py-1 rounded-full " />

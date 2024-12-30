@@ -6,7 +6,7 @@ import {Toaster} from 'sonner'
 const App = () => {
   return (
     <LoadingBarContainer>
-      <main className="font-clash w-full h-dvh">
+      <main className="font-clash w-full h-dvh ">
         <Toaster richColors/>
         <Header />
         <Router />

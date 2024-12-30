@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const LeftPanel = () => {
   return (
-    <div className="min-w-[248px] h-dvh bg-slate-100 rounded-md hidden sm:block ">
+    <div className="min-w-[248px] h-dvh bg-slate-100 rounded-md hidden sm:block  ">
       <div className="px-6 py-10">
         <h3 className="uppercase font-clash-semibold text-sm text-gray">
           main menu

@@ -1,7 +1,10 @@
 import React from "react";
+import WrapperContainer from "../components/WrapperContainer";
 
 const Courses = () => {
-  return <div>Courses</div>;
+  return <WrapperContainer>
+    
+  </WrapperContainer>
 };
 
 export default Courses;
