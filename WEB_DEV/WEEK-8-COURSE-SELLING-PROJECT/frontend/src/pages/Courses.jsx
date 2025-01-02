@@ -6,14 +6,10 @@ import { CourseCard } from "../components/CourseCard";
 const Courses = () => {
   return (
     <WrapperContainer>
-
-      <div className="flex flex-wrap gap-5 " >
-
-      {course.map((items, i) => (
-        <div key={i} className="border-2 border-dusty rounded-2xl min-h-[300px] max-w-[300px]  " >
-          <CourseCard {...items} />
-        </div>
-      ))}
+      <div className="flex flex-wrap gap-5 justify-center md:justify-start ">
+        {course.map((items, i) => (
+          <CourseCard key={i} {...items} />
+        ))}
       </div>
     </WrapperContainer>
   );

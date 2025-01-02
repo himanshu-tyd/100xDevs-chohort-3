@@ -8,6 +8,20 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffff;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius:40px; 
+background: #daf82f;
+
+}
+
 @layer base {
   @font-face {
     font-family: "ClashDisplay-Regular";

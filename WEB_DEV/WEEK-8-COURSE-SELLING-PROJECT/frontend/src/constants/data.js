@@ -15,24 +15,24 @@ export const course = [
     title: "Complete Web development + Devops Cohort",
     desc: "This course is a comprehensive program that covers web development and DevOps. You will learn how to build full-stack web applications using modern technologies such as React, Node.js and MongoDB. You will also learn how to deploy your applications to the cloud using Docker and Kubernetes.",
     image: img2,
-    price: 5900,
+    price: 3999,
   },
   {
     title: "Complete Web3/Blockchain Cohort",
     desc: "This course is a comprehensive program that covers web3 and blockchain development. You will learn how to build decentralized applications using solidity and web3.js. You will also learn how to deploy your applications to the cloud using Docker and Kubernetes.",
     image: img3,
-    price: 5900,
+    price: 4900,
   },
   {
     title: "Complete Web Development Cohort",
     desc: "This course is a comprehensive program that covers web development. You will learn how to build full-stack web applications using modern technologies such as React, Node.js and MongoDB.",
     image: img4,
-    price: 5900,
+    price: 3500,
   },
   {
     title: "Complete Devops Cohort",
     desc: "This course is a comprehensive program that covers web development and DevOps. You will learn how to build full-stack web applications using modern technologies such as React, Node.js and MongoDB. You will also learn how to deploy your applications to the cloud using Docker and Kubernetes.",
     image: img6,
-    price: 5900,
+    price: 2900,
   },
 ];
