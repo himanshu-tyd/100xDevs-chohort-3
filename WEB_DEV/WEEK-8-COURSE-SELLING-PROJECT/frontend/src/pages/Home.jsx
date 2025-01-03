@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 const Home = () => {
   return (
-    <WrapperContainer>
+    <WrapperContainer containerClass={` flex items-start justify-center w-full h-full overflow-x-hidden`} >
       <div className="flex flex-col w-full space-y-5  ">
         <div className="flex-center flex justify-center w-full ">
           <Swiper spaceBetween={30} slidesPerView={3} autoplay:true>
