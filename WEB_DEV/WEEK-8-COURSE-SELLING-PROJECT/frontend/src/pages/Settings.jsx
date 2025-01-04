@@ -2,9 +2,25 @@ import { useState } from "react";
 import WrapperContainer from "../components/WrapperContainer";
 import TextInput from "../components/TextInput";
 import { getContextData } from "../context/AuthContexProvider";
+import Button from "../components/Button";
 
 const Settings = () => {
   const [active, setActive] = useState(0);
+  const [passwords, setPasswords] = useState({
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setPasswords({ ...passwords, [name]: value });
+
+    console.log(passwords)
+
+  };
+
   const { user } = getContextData();
   const fullName = `${user.firstName} ${user.lastName}`;
 
@@ -24,7 +40,7 @@ const Settings = () => {
         ))}
       </div>
       <div className="mt-5 flex flex-col gap-5">
-        {active === 0 ? (
+        {active === 0 && (
           <>
             <TextInput lable={"full name"} value={fullName} isReadOnly={true} />
             <TextInput
@@ -33,12 +49,41 @@ const Settings = () => {
               isReadOnly={true}
             />
           </>
-        ) : (
-          <TextInput
-            lable={"current password"}
-            placeholder={"Enter current password and change it"}
-            isReadOnly={true}
-          />
+        )}
+
+        {active == 1 && (
+          <>
+            <TextInput
+              type={"password"}
+              value={passwords.current_password}
+              handleChange={handleChange}
+              placeholder={"*********"}
+              lable={"Current Password"}
+              name={"current_password"}
+            />
+            <TextInput
+              type={"password"}
+              value={passwords.new_password}
+              handleChange={handleChange}
+              name={"new_password"}
+              lable={"new password"}
+              placeholder={"*********"}
+            />
+            <TextInput
+              type={"password"}
+              handleChange={handleChange}
+              name={"confirm_password"}
+              lable={"confirm password"}
+              placeholder={"*********"}
+              value={passwords.confirm_password}
+            />
+            <Button
+              lable={"Save Password"}
+              containerClass={
+                " mt-10 bg-dark max-w-[200px]  text-white rounded-full "
+              }
+            />
+          </>
         )}
       </div>
     </WrapperContainer>

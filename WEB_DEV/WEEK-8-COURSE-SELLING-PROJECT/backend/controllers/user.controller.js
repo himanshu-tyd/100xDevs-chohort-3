@@ -158,3 +158,12 @@ export const buyCoures = async (req, res) => {
     message: "Congratulation you successfully enrolled in course ",
   });
 };
+
+export const updatePassword=async(req,res)=>{
+  const userId=req.userId
+
+  const user=UserModel.findById(userId)
+
+  console.log(user)
+
+}

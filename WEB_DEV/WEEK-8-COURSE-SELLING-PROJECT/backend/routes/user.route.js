@@ -16,5 +16,6 @@ route.post("/signin", signin);
 route.post("/buy/:id",isAuthenticate,  buyCoures);
 route.get('/mycourse' , isAuthenticate , myCourse )
 route.get("/", getAllCourse);
+route.patch("/",isAuthenticate, getAllCourse);
 
 export default route;
