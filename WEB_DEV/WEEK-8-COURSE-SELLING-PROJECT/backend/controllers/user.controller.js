@@ -165,5 +165,8 @@ export const updatePassword=async(req,res)=>{
   const user=UserModel.findById(userId)
 
   console.log(user)
+  console.log(user)
 
+
+  
 }
