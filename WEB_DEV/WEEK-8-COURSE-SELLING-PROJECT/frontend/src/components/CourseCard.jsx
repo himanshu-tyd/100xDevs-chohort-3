@@ -1,6 +1,10 @@
 import { FaStar } from "react-icons/fa";
 
 export const CourseCard = ({ title, desc, image, price }) => {
+
+
+  const random = Math.floor(Math.random() * 3) + 1;
+
   return (
     <div className="p-4 flex flex-col gap-2 border-2 border-dusty rounded-2xl min-h-[300px] max-w-full sm:max-w-[300px]  border-b-4 border-r-4  w-full  ">
       <img
@@ -13,10 +17,10 @@ export const CourseCard = ({ title, desc, image, price }) => {
       <div className="flex items-center  gap-2 w-full">
         <span className="font-clash-semibold">{price}</span>
         <span className="font-clash-regular  text-gray text-sm line-through ">
-          {price * 2}
+          {price * random}
         </span>
         <p className="ml-auto text-green-600 font-clash-bold backdrop-blur-lg ">
-          {(price / (price * 2)) * 100}% OFF
+          {Math.floor((price / (price * random)) * 100).toString().slice(0, 2)}% OFF
         </p>
       </div>
       <div className="flex gap-1 mt-2">

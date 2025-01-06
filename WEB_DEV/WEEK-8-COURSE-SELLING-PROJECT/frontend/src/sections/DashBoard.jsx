@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Courses from "../pages/Courses";
 import Purchase from "../pages/Purchase";
 import Settings from "../pages/Settings";
+import CourseDetails from "../components/CourseDetails";
 
 const DashBoard = () => {
   return (
@@ -11,6 +12,7 @@ const DashBoard = () => {
       <LeftPanel />
       <Routes>
         <Route path={`home`} element={<Home />} />
+        <Route path={`courses/course-details`} element={<CourseDetails />} />
         <Route path={`courses`} element={<Courses />} />
         <Route path={`purchase`} element={<Purchase />} />
         <Route path={`settings`} element={<Settings />} />
