@@ -159,14 +159,42 @@ export const buyCoures = async (req, res) => {
   });
 };
 
-export const updatePassword=async(req,res)=>{
-  const userId=req.userId
+export const updatePassword = async (req, res) => {
+  const userId = req.userId;
 
-  const user=UserModel.findById(userId)
+  const { current_password, new_password, confirm_password } = req.body;
 
-  console.log(user)
-  console.log(user)
+  if(!current_password || !new_password || !confirm_password){
+    return res.json({success:false, message: "Field are missing please fill all the fields."})
+  }
 
+  const user = await UserModel.findOne({ _id: userId });
 
-  
-}
+  if (!user) {
+    return res.json({ success: false, message: "failed to get user" });
+  }
+
+  const isValidPassword = await compareHash(current_password, user);
+
+  if (!isValidPassword) {
+    return res.json({ success: false, message: "Invalid Password" });
+  }
+
+  if (new_password !== confirm_password) {
+    return res.json({ success: false, message: "password did not match" });
+  }
+
+  const updateData = await UserModel.findByIdAndUpdate(user._id, {
+    password:await generateHash(new_password),
+  });
+
+  if (!updateData) {
+    return res.json({ success: false, message: "Opps something get wrong" });
+  }
+
+  res.json({
+    success: true,
+    message: "Password save successfully.",
+    data: updateData,
+  });
+};

@@ -7,10 +7,6 @@ export const purchase = (req, res) => {
   const courseId=req.params['id']
   const userId=req.userId
 
-
-  
-
-
 };
 
 export const getAllCourse = async (req, res) => {

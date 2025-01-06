@@ -3,6 +3,8 @@ import WrapperContainer from "../components/WrapperContainer";
 import TextInput from "../components/TextInput";
 import { getContextData } from "../context/AuthContexProvider";
 import Button from "../components/Button";
+import { useChangePassword } from "../hooks/useChangePassword";
+import { LoaderIcon } from "lucide-react";
 
 const Settings = () => {
   const [active, setActive] = useState(0);
@@ -12,17 +14,19 @@ const Settings = () => {
     confirm_password: "",
   });
 
+  const { user } = getContextData();
+  const { loading, changePassword } = useChangePassword();
+  const fullName = `${user.firstName} ${user.lastName}`;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setPasswords({ ...passwords, [name]: value });
-
-    console.log(passwords)
-
   };
 
-  const { user } = getContextData();
-  const fullName = `${user.firstName} ${user.lastName}`;
+  const handleSubmit = async () => {
+    await changePassword(passwords);
+  };
 
   return (
     <WrapperContainer containerClass={``}>
@@ -78,7 +82,8 @@ const Settings = () => {
               value={passwords.confirm_password}
             />
             <Button
-              lable={"Save Password"}
+              lable={loading ? <LoaderIcon className="animate-spin" />  : 'Save Password'}
+              handleClick={handleSubmit}
               containerClass={
                 " mt-10 bg-dark max-w-[200px]  text-white rounded-full "
               }
