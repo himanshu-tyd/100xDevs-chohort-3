@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const Clock = () => {
+const Clock = (props) => {
   const [count, setCount] = useState(0);
-
-
   //guard for our inteval that it doesn't re-render in every re-render
   useEffect(() => {
     setInterval(() => {
