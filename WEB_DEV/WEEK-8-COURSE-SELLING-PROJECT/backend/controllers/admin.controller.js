@@ -71,7 +71,7 @@ export const signin = async (req, res) => {
 
   // generate cookie here and send this to client
 
-  GenerateCookie(admin._id, res);
+  GenerateCookie(admin._id,role, res);
 
   res.json({
     success: true,
@@ -107,3 +107,54 @@ export const createCourse = async (req, res) => {
     data: newCourse,
   });
 };
+
+
+export const updatePassword = async (req, res) => {
+  const userId = req.userId;
+  const role = req.role;
+
+  console.log(role)
+
+  const { current_password, new_password, confirm_password } = req.body;
+
+  if (!current_password || !new_password || !confirm_password) {
+    return res.json({
+      success: false,
+      message: "Field are missing please fill all the fields.",
+    });
+  }
+
+
+
+    const user = await UserModel.findOne({ _id: userId });
+  
+
+  if (!user) {
+    return res.json({ success: false, message: "failed to get user" });
+  }
+
+  const isValidPassword = await compareHash(current_password, user);
+
+  if (!isValidPassword) {
+    return res.json({ success: false, message: "Invalid Password" });
+  }
+
+  if (new_password !== confirm_password) {
+    return res.json({ success: false, message: "password did not match" });
+  }
+
+  const updateData = await UserModel.findByIdAndUpdate(user._id, {
+    password: await generateHash(new_password),
+  });
+
+  if (!updateData) {
+    return res.json({ success: false, message: "Opps something get wrong" });
+  }
+
+  res.json({
+    success: true,
+    message: "Password save successfully.",
+    data: updateData,
+  });
+};
+

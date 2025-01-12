@@ -10,6 +10,8 @@ const Header = () => {
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("role");
+
     toast.success("Logout successfuly");
   };
 

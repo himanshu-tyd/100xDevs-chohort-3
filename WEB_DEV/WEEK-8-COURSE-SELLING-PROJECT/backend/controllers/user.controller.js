@@ -1,4 +1,9 @@
-import { CourseModel, PurchasedModel, UserModel } from "../models/models.js";
+import {
+  AdminModel,
+  CourseModel,
+  PurchasedModel,
+  UserModel,
+} from "../models/models.js";
 import { compareHash, generateHash } from "../utils/helper.js";
 import { GenerateCookie } from "../utils/verify.js";
 import { purchase } from "./course.controller.js";
@@ -72,7 +77,7 @@ export const signin = async (req, res) => {
 
   // generate cookie here and send this to client
 
-  GenerateCookie(user._id, res);
+  GenerateCookie(user._id, role, res);
 
   res.json({
     success: true,
@@ -161,14 +166,21 @@ export const buyCoures = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
   const userId = req.userId;
+  const role = req.role;
+
+  console.log(role)
 
   const { current_password, new_password, confirm_password } = req.body;
 
-  if(!current_password || !new_password || !confirm_password){
-    return res.json({success:false, message: "Field are missing please fill all the fields."})
+  if (!current_password || !new_password || !confirm_password) {
+    return res.json({
+      success: false,
+      message: "Field are missing please fill all the fields.",
+    });
   }
 
-  const user = await UserModel.findOne({ _id: userId });
+
+   const  user = await UserModel.findOne({ _id: userId });
 
   if (!user) {
     return res.json({ success: false, message: "failed to get user" });
@@ -185,7 +197,7 @@ export const updatePassword = async (req, res) => {
   }
 
   const updateData = await UserModel.findByIdAndUpdate(user._id, {
-    password:await generateHash(new_password),
+    password: await generateHash(new_password),
   });
 
   if (!updateData) {

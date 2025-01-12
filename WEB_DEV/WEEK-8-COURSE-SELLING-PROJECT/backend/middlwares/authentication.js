@@ -15,6 +15,7 @@ export const isAuthenticate = async (req, res, next) => {
     }
 
     req.userId = decode.userId;
+    req.userRole=decode.role
 
     next();
   } catch (error) {

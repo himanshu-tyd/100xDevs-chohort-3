@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
 
-
 export const useChangePassword = () => {
   const [loading, setLoading] = useState(false);
 
@@ -12,21 +11,31 @@ export const useChangePassword = () => {
     try {
       if (!validataPassword(data)) return;
 
+      let url = null;
+
+      const role = localStorage.getItem("role");
+
+      if (role === "user") {
+        url = "/api/users/update-password";
+      }
+
+      if (role === "admin") {
+        url = "/api/admin/update-password";
+      }
+
       setLoading(true);
-      const res = await axios.post("/api/users/update-password", {
+      const res = await axios.post(url, {
         current_password,
         new_password,
         confirm_password,
       });
 
-      if(!res.data.success){
-        return toast.error(res.data.message)
+      if (!res.data.success) {
+        return toast.error(res.data.message);
       }
-  
-      toast.success(res.data.message)
-      
-    } catch (e) {
 
+      toast.success(res.data.message);
+    } catch (e) {
       return toast.error(
         "Opps something get wrong while updating password" + e
       );

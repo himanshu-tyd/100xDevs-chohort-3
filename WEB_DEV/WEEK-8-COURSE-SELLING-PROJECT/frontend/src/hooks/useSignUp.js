@@ -13,8 +13,6 @@ const useSignUp = () => {
 
     if (!isValid) return;
 
-    console.log(formData.role);
-
     try {
       setLoading(true);
       if (formData.role == "admin") {
@@ -23,7 +21,6 @@ const useSignUp = () => {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
-          role: formData.role,
         });
 
         if(!res.data.success){
@@ -41,7 +38,6 @@ const useSignUp = () => {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
-          role: formData.role,
         });
         
         if(!res.data.success){

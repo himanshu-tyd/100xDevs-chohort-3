@@ -17,42 +17,37 @@ const useSignIn = () => {
 
     const { email, password, role } = formData;
 
+    let url = null;
+
+    if (role === "admin") {
+      url = "/api/admin/signin";
+    }
+
+    if (role === "user") {
+      url = "/api/users/signin";
+    }
+
     try {
       setLoading(true);
-      if (role == "admin") {
-        const res = await axios.post("/api/admin/signin", {
-          email,
-          password,
-          role,
-        });
+      const res = await axios.post(url, {
+        email,
+        password,
+        role,
+      });
 
-        if (!res.data.success) {
-          return toast.error(res.data.message);
-        }
-
-        toast.success(res.data.message);
-        navigate("/");
-
-        localStorage.setItem("user", JSON.stringify(res.data.data));
-        setUser(res.data.data);
-        //here we set data in localStorage
+      if (!res.data.success) {
+        return toast.error(res.data.message);
       }
-      if (role == "user") {
-        const res = await axios.post("/api/users/signin", {
-          email,
-          password,
-          role,
-        });
 
-        if (!res.data.success) {
-          return toast.error(res.data.message);
-        }
+      toast.success(res.data.message);
+      navigate("/");
 
-        localStorage.setItem("user", JSON.stringify(res.data.data));
-        setUser(res.data.data);
-        navigate("/");
-        toast.success(res.data.message);
-      }
+      localStorage.setItem("user", JSON.stringify(res.data.data));
+      localStorage.setItem("role", role);
+      setUser(res.data.data);
+      //here we set data in localStorage
+
+      toast.success(res.data.message);
     } catch (e) {
       return toast.error("Internal server error", e.error);
     } finally {

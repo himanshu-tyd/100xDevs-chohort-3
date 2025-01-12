@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import Notification from './Notification'
+import Count from './Count'
 
 function App() {
 
   return (
     <>
     {/* <ToggleMessage/> */}
-    <Notification/>
+    {/* <Notification/> */}
+
+
+<Count/>
+
     </>
   )
 }
