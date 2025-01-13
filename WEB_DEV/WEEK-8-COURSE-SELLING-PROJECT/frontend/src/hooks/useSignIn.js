@@ -8,7 +8,7 @@ import { getContextData } from "../context/AuthContexProvider";
 const useSignIn = () => {
   const [loadig, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = getContextData();
+  const { setUser, setRole } = getContextData();
 
   const signIn = async (formData) => {
     const isValid = signInValidation(formData);
@@ -44,6 +44,7 @@ const useSignIn = () => {
 
       localStorage.setItem("user", JSON.stringify(res.data.data));
       localStorage.setItem("role", role);
+      setRole(role)
       setUser(res.data.data);
       //here we set data in localStorage
 

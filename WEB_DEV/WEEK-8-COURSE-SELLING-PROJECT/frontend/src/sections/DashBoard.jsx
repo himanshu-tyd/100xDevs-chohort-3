@@ -14,7 +14,7 @@ const DashBoard = () => {
         <Route path={`home`} element={<Home />} />
         <Route path={`courses/course-details`} element={<CourseDetails />} />
         <Route path={`courses`} element={<Courses />} />
-        <Route path={`purchase`} element={<Purchase />} />
+        <Route path={`purchase`} element={<Purchase />} /> 
         <Route path={`settings`} element={<Settings />} />
       </Routes>
     </div>
