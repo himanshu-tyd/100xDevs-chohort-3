@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Notification from './Notification'
 import Count from './Count'
+import NavBar from '../../9.1-REACT-BASICS/REACT-PART-2/src/NavBar'
+import ClocUnmountedLogic from '../../9.1-REACT-BASICS/REACT-PART-2/src/ClocUnmountedLogic'
 
 function App() {
 
@@ -8,10 +10,9 @@ function App() {
     <>
     {/* <ToggleMessage/> */}
     {/* <Notification/> */}
-
-
-<Count/>
-
+    {/* <Count/> */}
+    {/* <NavBar/> */}
+      <ClocUnmountedLogic/>
     </>
   )
 }
