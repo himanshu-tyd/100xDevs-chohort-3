@@ -82,5 +82,9 @@ background: #daf82f;
 }
 
 .input-style{
-  @apply px-4 py-2 text-dark outline-none  placeholder:text-slate-700 rounded-md duration-150 bg-slate-100 w-full
+  @apply px-3 py-2 text-dark outline-none  placeholder:text-slate-700 rounded-md duration-150 bg-slate-100 w-full
+}
+
+.button-click{
+  @apply duration-200 ease-in-out hover:scale-105 active:scale-100
 }

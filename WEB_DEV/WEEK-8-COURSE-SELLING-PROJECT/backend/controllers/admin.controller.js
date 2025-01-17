@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
     firstName,
     lastName,
     email,
-    password: await generateHash(password),
+    password: await generateHash(password)
   });
 
   if (!newAdmin) {

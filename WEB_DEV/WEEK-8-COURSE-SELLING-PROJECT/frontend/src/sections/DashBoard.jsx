@@ -5,12 +5,14 @@ import Courses from "../pages/Courses";
 import Purchase from "../pages/Purchase";
 import Settings from "../pages/Settings";
 import CourseDetails from "../components/CourseDetails";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const DashBoard = () => {
   return (
     <div className="w-full flex  h-full">
       <LeftPanel />
       <Routes>
+        <Route path={`/`} element={<AdminDashboard/>} />
         <Route path={`home`} element={<Home />} />
         <Route path={`courses/course-details`} element={<CourseDetails />} />
         <Route path={`courses`} element={<Courses />} />

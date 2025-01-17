@@ -21,6 +21,7 @@ const useSignUp = () => {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
+          role: formData.role,
         });
 
         if(!res.data.success){
@@ -38,6 +39,7 @@ const useSignUp = () => {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
+          role: formData.role,
         });
         
         if(!res.data.success){
