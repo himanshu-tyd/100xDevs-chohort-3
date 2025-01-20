@@ -85,7 +85,7 @@ export const createCourse = async (req, res) => {
   const userId = req.userId;
   const { title, description, price, imageUrl } = req.body;
 
-  if (!title || !description || !price) {
+  if (!title || !description || !price || !imageUrl) {
     return res.json({ success: false, message: "all fieds are requre" });
   }
 
@@ -103,7 +103,7 @@ export const createCourse = async (req, res) => {
 
   res.json({
     success: true,
-    message: "Coure register successfully",
+    message: "Course register successfully",
     data: newCourse,
   });
 };

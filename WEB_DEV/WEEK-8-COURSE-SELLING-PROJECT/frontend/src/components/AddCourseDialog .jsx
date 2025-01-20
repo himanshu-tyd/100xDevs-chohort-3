@@ -1,25 +1,58 @@
-import React, { useState } from "react";
-import { X } from "lucide-react";
+import { useState } from "react";
+import { Loader2Icon, X } from "lucide-react";
 
 import { toast } from "sonner";
 import useCloudnaryUpload from "../hooks/useUploadImage";
+import skeletonImage from "../assets/image.jpg";
+import useAddUpload from "../hooks/useAddCourse";
+import { getContextData } from "../context/AuthContexProvider";
 
 const AddCourseDialog = () => {
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState({});
+  const [url, setUrl] = useState("");
+  const [data, setData] = useState({
+    title: "",
+    description: "",
+    imageUrl: "",
+    price: "",
+  });
 
   const { loading, uploadImage } = useCloudnaryUpload();
+  const { loading: uploadLoading, uploadCours } = useAddUpload();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setData({ ...data, [name]: value });
+  };
+
+  const handleSumit = async (e) => {
+    e.preventDefault();
+
+    await uploadCours(data);
+  };
 
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
+
+    const size = parseInt(file.size); //this will return file size in bytes
 
     if (!file) {
       toast.error("Please select an image");
     }
 
-    console.log(file);
+    if (size > 300 * 1024) {
+      return toast.error("image size should be lest than 100kb");
+    }
 
-    await uploadImage(file);
+    const url = await uploadImage(file);
+
+    if (!url) {
+      return toast.error("Failed to get url");
+    }
+
+    setUrl(url);
+    setData({ ...data, imageUrl: url });
   };
 
   const handleOpen = () => {
@@ -36,9 +69,12 @@ const AddCourseDialog = () => {
       </button>
       <div className={open ? "block" : "hidden"}>
         <div
-          className={`w-screen h-lvh absolute top-0 left-0 flex-center bg-dark bg-opacity-70 backdrop-blur-sm `}
+          className={`w-screen h-screen absolute top-0 left-0 flex-center bg-dark bg-opacity-70 backdrop-blur-sm overflow-hidden transition-all`}
         >
-          <div className="min-w-auto sm:min-w-[600px]  p-4 bg-white rounded-lg">
+          <form
+            onSubmit={handleSumit}
+            className="min-w-auto sm:max-w-[600px]  p-4 bg-white rounded-lg"
+          >
             <div className="flex items-center justify-between w-full ">
               <div className="w-full">
                 <h3
@@ -71,6 +107,9 @@ const AddCourseDialog = () => {
                 </label>
                 <input
                   id="title"
+                  required
+                  onChange={handleChange}
+                  name="title"
                   type="text"
                   placeholder="Enter course name"
                   className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
@@ -84,7 +123,10 @@ const AddCourseDialog = () => {
                   Description
                 </label>
                 <textarea
+                  required
+                  onChange={handleChange}
                   id="desc"
+                  name="description"
                   type="text"
                   placeholder="Enter course description"
                   className="input-style h-[120px] placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
@@ -95,15 +137,27 @@ const AddCourseDialog = () => {
                   htmlFor="image"
                   className="text-black text-sm  font-semibold "
                 >
-                  Course Image
+                  Image
                 </label>
                 <input
+                  required
                   onChange={handleUploadImage}
                   id="image"
+                  name="image"
                   type="file"
-                  placeholder="Enter course name"
+                  placeholder="upload image"
                   className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
                 />
+                <div className="w-full h-20 rounded-md bg-slate-100 flex items-center justify-center ">
+                  {loading ? (
+                    <Loader2Icon className="animate-spin" />
+                  ) : (
+                    <img
+                      src={url == "" ? skeletonImage : url}
+                      className="w-full h-full object-cover rounded-md "
+                    />
+                  )}
+                </div>
               </div>
               <div className="flex flex-col gap-1">
                 <label
@@ -113,7 +167,10 @@ const AddCourseDialog = () => {
                   Price
                 </label>
                 <input
+                  required
+                  onChange={handleChange}
                   id="price"
+                  name="price"
                   type="number"
                   placeholder="$ Price"
                   className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
@@ -130,12 +187,19 @@ const AddCourseDialog = () => {
                 >
                   Cancel
                 </button>
-                <button className=" button-click px-8 py-2 text-sm bg-dark border-2 border-dusty text-white rounded-lg ">
-                  Save
+                <button
+                  type="submit"
+                  className=" button-click px-8 py-2 text-sm bg-dark border-2 border-dusty text-white rounded-lg "
+                >
+                  {uploadLoading ? (
+                    <Loader2Icon className="w-auto animate-spin  " />
+                  ) : (
+                    "Save"
+                  )}
                 </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

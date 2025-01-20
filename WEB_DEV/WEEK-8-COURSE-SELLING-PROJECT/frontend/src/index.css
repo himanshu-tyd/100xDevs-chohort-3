@@ -9,7 +9,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {
@@ -17,9 +17,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius:40px; 
-background: #daf82f;
-
+  border-radius: 20px;
+  background: #daf82f;
 }
 
 @layer base {
@@ -31,46 +30,46 @@ background: #daf82f;
   }
 
   @font-face {
-    font-family: 'ClashDisplay-Light';
-    src: url('../fonts/ClashDisplay-Light.woff2') format('woff2'),
-         url('../fonts/ClashDisplay-Light.woff') format('woff'),
-         url('../fonts/ClashDisplay-Light.ttf') format('truetype');
+    font-family: "ClashDisplay-Light";
+    src: url("../fonts/ClashDisplay-Light.woff2") format("woff2"),
+      url("../fonts/ClashDisplay-Light.woff") format("woff"),
+      url("../fonts/ClashDisplay-Light.ttf") format("truetype");
     font-weight: 300;
     font-display: swap;
     font-style: normal;
   }
   @font-face {
-    font-family: 'ClashDisplay-Regular';
-    src: url('../fonts/ClashDisplay-Regular.woff2') format('woff2'),
-         url('../fonts/ClashDisplay-Regular.woff') format('woff'),
-         url('../fonts/ClashDisplay-Regular.ttf') format('truetype');
+    font-family: "ClashDisplay-Regular";
+    src: url("../fonts/ClashDisplay-Regular.woff2") format("woff2"),
+      url("../fonts/ClashDisplay-Regular.woff") format("woff"),
+      url("../fonts/ClashDisplay-Regular.ttf") format("truetype");
     font-weight: 400;
     font-display: swap;
     font-style: normal;
   }
   @font-face {
-    font-family: 'ClashDisplay-Medium';
-    src: url('../fonts/ClashDisplay-Medium.woff2') format('woff2'),
-         url('../fonts/ClashDisplay-Medium.woff') format('woff'),
-         url('../fonts/ClashDisplay-Medium.ttf') format('truetype');
+    font-family: "ClashDisplay-Medium";
+    src: url("../fonts/ClashDisplay-Medium.woff2") format("woff2"),
+      url("../fonts/ClashDisplay-Medium.woff") format("woff"),
+      url("../fonts/ClashDisplay-Medium.ttf") format("truetype");
     font-weight: 500;
     font-display: swap;
     font-style: normal;
   }
   @font-face {
-    font-family: 'ClashDisplay-Semibold';
-    src: url('../fonts/ClashDisplay-Semibold.woff2') format('woff2'),
-         url('../fonts/ClashDisplay-Semibold.woff') format('woff'),
-         url('../fonts/ClashDisplay-Semibold.ttf') format('truetype');
+    font-family: "ClashDisplay-Semibold";
+    src: url("../fonts/ClashDisplay-Semibold.woff2") format("woff2"),
+      url("../fonts/ClashDisplay-Semibold.woff") format("woff"),
+      url("../fonts/ClashDisplay-Semibold.ttf") format("truetype");
     font-weight: 600;
     font-display: swap;
     font-style: normal;
   }
   @font-face {
-    font-family: 'ClashDisplay-Bold';
-    src: url('../fonts/ClashDisplay-Bold.woff2') format('woff2'),
-         url('../fonts/ClashDisplay-Bold.woff') format('woff'),
-         url('../fonts/ClashDisplay-Bold.ttf') format('truetype');
+    font-family: "ClashDisplay-Bold";
+    src: url("../fonts/ClashDisplay-Bold.woff2") format("woff2"),
+      url("../fonts/ClashDisplay-Bold.woff") format("woff"),
+      url("../fonts/ClashDisplay-Bold.ttf") format("truetype");
     font-weight: 700;
     font-display: swap;
     font-style: normal;
@@ -81,10 +80,10 @@ background: #daf82f;
   @apply justify-center flex  items-center;
 }
 
-.input-style{
-  @apply px-3 py-2 text-dark outline-none  placeholder:text-slate-700 rounded-md duration-150 bg-slate-100 w-full
+.input-style {
+  @apply px-3 py-2 text-dark outline-none  placeholder:text-slate-700 rounded-md duration-150 bg-slate-100 w-full;
 }
 
-.button-click{
-  @apply duration-200 ease-in-out hover:scale-105 active:scale-100
+.button-click {
+  @apply duration-200 ease-in-out hover:scale-105 active:scale-100;
 }
