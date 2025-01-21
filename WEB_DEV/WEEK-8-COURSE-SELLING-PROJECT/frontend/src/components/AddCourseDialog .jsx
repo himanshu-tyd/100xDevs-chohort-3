@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import useCloudnaryUpload from "../hooks/useUploadImage";
 import skeletonImage from "../assets/image.jpg";
 import useAddUpload from "../hooks/useAddCourse";
-import { getContextData } from "../context/AuthContexProvider";
 
 const AddCourseDialog = () => {
   const [open, setOpen] = useState(false);

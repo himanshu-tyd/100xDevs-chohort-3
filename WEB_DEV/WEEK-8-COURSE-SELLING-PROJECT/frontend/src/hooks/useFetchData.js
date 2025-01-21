@@ -17,13 +17,10 @@ export const useFetch = (url) => {
           return toast.error(res.data.message);
         }
 
-        setData(res.data.data);
+        setData(res.data);
       } catch (error) {
         setError(error.message);
-        return toast.error(
-          "!oops something get wrong while fetching data",
-          error.message
-        );
+        return toast.error("!oops something get wrong while fetching data");
       } finally {
         setLoading(false);
       }
@@ -32,5 +29,6 @@ export const useFetch = (url) => {
     fetchData();
   }, [url]);
 
-  return { loading, data ,error};
+  return { loading, data, error };
 };
+

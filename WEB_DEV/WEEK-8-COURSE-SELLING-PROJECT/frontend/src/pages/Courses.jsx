@@ -2,8 +2,8 @@ import WrapperContainer from "../components/WrapperContainer";
 import { course } from "../constants/data";
 import { CourseCard } from "../components/CourseCard";
 
-import { useFetch } from "../hooks/fetchData";
 import Loader from "../components/Loader";
+import { useFetch } from "../hooks/useFetchData";
 
 const Courses = () => {
   const { data: courses, loading, error } = useFetch("/api/course");

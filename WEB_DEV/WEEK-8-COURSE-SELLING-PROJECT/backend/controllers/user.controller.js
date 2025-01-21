@@ -6,7 +6,7 @@ import {
 } from "../models/models.js";
 import { compareHash, generateHash } from "../utils/helper.js";
 import { GenerateCookie } from "../utils/verify.js";
-import { purchase } from "./course.controller.js";
+
 
 export const signup = async (req, res) => {
   const { email, password, firstName, lastName, role } = req.body;

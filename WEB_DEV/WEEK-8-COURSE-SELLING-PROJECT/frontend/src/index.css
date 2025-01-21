@@ -6,20 +6,13 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  transition: all 0.5s;
 }
 
 ::-webkit-scrollbar {
   width: 2px;
 }
 
-::-webkit-scrollbar-track {
-  background: #ffff;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #daf82f;
-}
 
 @layer base {
   @font-face {
@@ -86,4 +79,9 @@
 
 .button-click {
   @apply duration-200 ease-in-out hover:scale-105 active:scale-100;
+}
+
+
+.max-width{
+  @apply  max-w-[100px];
 }

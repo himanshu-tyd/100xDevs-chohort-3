@@ -22,3 +22,35 @@ export const getAllCourse = async (req, res) => {
     data: courses,
   });
 };
+
+
+export const getAdminCourse=async(req,res)=>{
+
+  
+  const userId=req.userId
+  const userRole=req.userRole
+
+
+  try {
+    
+    if(userRole!=='admin'){
+      return res.json({successfL:false, message: 'You are not authorize to access this'})
+    }
+  
+    if(!userId){
+      return res.json({success:false, message: 'failed to authenticate'})
+    }
+  
+    const course=await CourseModel.find({creatorId:userId})
+
+    if(course.length<0){
+      return res.json({message:'You have not create any course yet!'})
+    }
+
+    res.json({success:true, message:'course found',data:course})
+  } catch (error) {
+    return res.json({success:false,message: 'Intenal server error'})
+  }
+
+
+}
