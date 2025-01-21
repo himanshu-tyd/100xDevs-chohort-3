@@ -9,7 +9,7 @@ const DashboardHeader = () => {
   return (
     <header className="flex items-center  ">
       <div className="flex items-center justify-between w-full ">
-        <h2 className="text-lg font-semibold w-full">Admin Dashboard</h2>
+        <h2 className="text-lg font-semibold w-full text-center md:text-left ">Admin Dashboard</h2>
         <div className="flex items-center justify-end gap-4  w-full ">
           <Bell className="text-xl text-gray" />
           <img

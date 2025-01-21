@@ -83,5 +83,5 @@
 
 
 .max-width{
-  @apply  max-w-[100px];
+  @apply   w-[138px] md:w-[148px];
 }

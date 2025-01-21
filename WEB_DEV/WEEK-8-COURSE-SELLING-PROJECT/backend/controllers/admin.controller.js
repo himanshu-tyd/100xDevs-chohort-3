@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
     firstName,
     lastName,
     email,
-    password: await generateHash(password)
+    password: await generateHash(password),
   });
 
   if (!newAdmin) {
@@ -71,7 +71,7 @@ export const signin = async (req, res) => {
 
   // generate cookie here and send this to client
 
-  GenerateCookie(admin._id,role, res);
+  GenerateCookie(admin._id, role, res);
 
   res.json({
     success: true,
@@ -108,12 +108,18 @@ export const createCourse = async (req, res) => {
   });
 };
 
-
 export const updatePassword = async (req, res) => {
-  const userId = req.userId;
-  const role = req.role;
 
-  console.log(role)
+  const userId = req.userId;
+  const role = req.userRole;
+
+
+  if (!userId || !role) {
+    return res.json({
+      success: false,
+      message: "failed to get userId and role",
+    });
+  }
 
   const { current_password, new_password, confirm_password } = req.body;
 
@@ -124,10 +130,7 @@ export const updatePassword = async (req, res) => {
     });
   }
 
-
-
-    const user = await UserModel.findOne({ _id: userId });
-  
+  const user = await AdminModel.findOne({ _id: userId });
 
   if (!user) {
     return res.json({ success: false, message: "failed to get user" });
@@ -143,7 +146,7 @@ export const updatePassword = async (req, res) => {
     return res.json({ success: false, message: "password did not match" });
   }
 
-  const updateData = await UserModel.findByIdAndUpdate(user._id, {
+  const updateData = await AdminModel.findByIdAndUpdate(user._id, {
     password: await generateHash(new_password),
   });
 
@@ -157,4 +160,3 @@ export const updatePassword = async (req, res) => {
     data: updateData,
   });
 };
-

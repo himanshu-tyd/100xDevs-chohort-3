@@ -1,8 +1,7 @@
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-export const CourseCard = ({ title, desc, image, price }) => {
-
-
+export const CourseCard = ({_id, title, desc, image, price }) => {
   const random = Math.floor(Math.random() * 3) + 1;
 
   return (
@@ -20,7 +19,10 @@ export const CourseCard = ({ title, desc, image, price }) => {
           {price * random}
         </span>
         <p className="ml-auto text-green-600 font-clash-bold backdrop-blur-lg ">
-          {Math.floor((price / (price * random)) * 100).toString().slice(0, 2)}% OFF
+          {Math.floor((price / (price * random)) * 100)
+            .toString()
+            .slice(0, 2)}
+          % OFF
         </p>
       </div>
       <div className="flex gap-1 mt-2">
@@ -29,6 +31,15 @@ export const CourseCard = ({ title, desc, image, price }) => {
             <FaStar className="text-yellow" />
           </p>
         ))}
+      </div>
+      <div className="w-full flex-center mt-2 relative group  ">
+        <Link
+          to={`dashboard/courses/${_id}`}
+          className="cursor-pointe bg-white hover:bg-yellow w-full text-center font-clash-semibold rounded-full py-2 border z-20 duration-150 "
+        >
+          View Details
+        </Link>
+        <span className="w-full h-full bg-black rounded-full absolute top-0 group-hover:translate-x-2 group-hover:translate-y-2  duration-150  "></span>
       </div>
     </div>
   );

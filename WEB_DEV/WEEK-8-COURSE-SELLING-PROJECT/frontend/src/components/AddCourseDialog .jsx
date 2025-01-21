@@ -11,7 +11,7 @@ const AddCourseDialog = () => {
   const [url, setUrl] = useState("");
   const [data, setData] = useState({
     title: "",
-    description: "",
+    desc: "",
     imageUrl: "",
     price: "",
   });
@@ -28,7 +28,11 @@ const AddCourseDialog = () => {
   const handleSumit = async (e) => {
     e.preventDefault();
 
-    await uploadCours(data);
+    const result = await uploadCours(data);
+
+    if (!result) return;
+
+    setOpen(false);
   };
 
   const handleUploadImage = async (e) => {
@@ -125,7 +129,7 @@ const AddCourseDialog = () => {
                   required
                   onChange={handleChange}
                   id="desc"
-                  name="description"
+                  name="desc"
                   type="text"
                   placeholder="Enter course description"
                   className="input-style h-[120px] placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "

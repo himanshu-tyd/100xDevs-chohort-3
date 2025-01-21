@@ -19,8 +19,13 @@ const useAddUpload = () => {
       
       toast.success(res.data.message)
 
+      return true
+
     } catch (e) {
       toast.error(e.error);
+
+      return false
+
     } finally {
       setLoading(false);
     }

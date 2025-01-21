@@ -8,6 +8,8 @@ import { useFetch } from "../hooks/useFetchData";
 const Courses = () => {
   const { data: courses, loading, error } = useFetch("/api/course");
 
+  console.log(courses.data);
+
   return (
     <div className="flex">
       <WrapperContainer
@@ -18,19 +20,16 @@ const Courses = () => {
         {loading ? (
           <Loader />
         ) : (
-          <>
-            {error ? (
-              <div className="w-full h-full flex-center text-red-500">
-                {error}
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-5 justify-center md:justify-start ">
-                {course.map((items, i) => (
-                  <CourseCard key={i} {...items} />
-                ))}
-              </div>
-            )}
-          </>
+          <div className="flex flex-wrap gap-5 justify-center md:justify-start ">
+            {courses.data >= 0 ?
+              courses?.data.map((items, i) => (
+                <CourseCard key={i} {...items} />
+              ))
+              : 
+                <p className="text-slate-700 h-dvh flex-center w-full self-center " >There are no course listed yet!</p>
+             
+            }
+          </div>
         )}
       </WrapperContainer>
     </div>
