@@ -4,9 +4,18 @@ import { CourseCard } from "../components/CourseCard";
 
 import Loader from "../components/Loader";
 import { useFetch } from "../hooks/useFetchData";
+import { useStore } from "zustand";
 
 const Courses = () => {
-  const { data: courses, loading, error } = useFetch("/api/course");
+  const { data, loading, error } = useFetch("/api/course");
+  const {courses, setCourses}=useStore()
+
+
+  setCourses(data)
+
+  console.log(courses)
+
+
 
   console.log(courses.data);
 

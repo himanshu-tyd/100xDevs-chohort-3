@@ -44,9 +44,9 @@ const AddCourseDialog = () => {
       toast.error("Please select an image");
     }
 
-    if (size > 300 * 1024) {
-      return toast.error("image size should be lest than 100kb");
-    }
+    // if (size > 300 * 1024) {
+    //   return toast.error("image size should be lest than 300kb");
+    // }
 
     const url = await uploadImage(file);
 

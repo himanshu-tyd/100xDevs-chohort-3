@@ -2,22 +2,28 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const useFetch = (url) => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState();
+export const useFetch = (url, setData, data) => {
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
+    
+    let mounted = true;
     const fetchData = async () => {
       try {
         setLoading(true);
         const res = await axios.get(url);
 
-        if (!res.data.success) {
-          return toast.error(res.data.message);
-        }
+        const context = res.data;
 
-        setData(res.data);
+        if (!context.success) {
+          return toast.error(context.message);
+        }
+        console.log(context.data);
+
+        if (mounted) {
+          await setData(context.data);
+        }
       } catch (error) {
         setError(error.message);
         return toast.error("!oops something get wrong while fetching data");
@@ -26,9 +32,14 @@ export const useFetch = (url) => {
       }
     };
 
-    fetchData();
-  }, [url]);
+    
 
-  return { loading, data, error };
+
+     fetchData();
+
+     return ()=>mounted=false
+
+  }, []);
+
+  return { loading, error, data };
 };
-

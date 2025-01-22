@@ -83,15 +83,15 @@ export const signin = async (req, res) => {
 
 export const createCourse = async (req, res) => {
   const userId = req.userId;
-  const { title, description, price, imageUrl } = req.body;
+  const { title, desc, price, imageUrl } = req.body;
 
-  if (!title || !description || !price || !imageUrl) {
+  if (!title || !desc || !price || !imageUrl) {
     return res.json({ success: false, message: "all fieds are requre" });
   }
 
   const newCourse = await CourseModel.create({
     title,
-    description,
+    desc,
     price,
     imageUrl,
     creatorId: userId,
