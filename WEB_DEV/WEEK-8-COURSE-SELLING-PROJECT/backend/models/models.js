@@ -28,6 +28,11 @@ const purchaseSchema = new Schema({
     type: Types.ObjectId,
     rel: "course",
   },
+  isPurchased: {
+    type: Boolean,
+    enum: [false, true],
+    default: false,
+  },
 });
 
 const UserModel = model("user", userSchema);

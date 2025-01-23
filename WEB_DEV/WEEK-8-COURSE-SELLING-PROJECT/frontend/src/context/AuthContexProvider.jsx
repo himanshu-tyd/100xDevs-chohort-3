@@ -7,7 +7,7 @@ const AuthContexProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user") || null)
   );
   const [role, setRole] = useState(
-    JSON.stringify(localStorage.getItem("role") || null)
+   localStorage.getItem("role") || null
   );
 
   const context = {

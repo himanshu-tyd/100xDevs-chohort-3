@@ -1,14 +1,16 @@
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export const CourseCard = ({_id, title, desc, image, price }) => {
+export const CourseCard = ({ _id, title, desc, imageUrl, price }) => {
   const random = Math.floor(Math.random() * 3) + 1;
 
   return (
-    <div className="p-4 flex flex-col gap-2 border-2 border-dusty rounded-2xl min-h-[300px] max-w-full sm:max-w-[300px]  border-b-4 border-r-4  w-full  ">
+    <div className="p-4 flex flex-col gap-2 border-2 border-dusty rounded-2xl    sm:max-w-[300px] md:max-w-[398px]  border-b-4 border-r-4    ">
       <img
-        src={image}
+        src={imageUrl}
         alt={title}
+        width={100}
+        height={100}
         className="w-full h-full object-cover rounded-2xl border-dusty border-2 "
       />
       <h5 className="text-sm font-clash-regular  ">{title}</h5>
@@ -34,8 +36,8 @@ export const CourseCard = ({_id, title, desc, image, price }) => {
       </div>
       <div className="w-full flex-center mt-2 relative group  ">
         <Link
-          to={`dashboard/courses/${_id}`}
-          className="cursor-pointe bg-white hover:bg-yellow w-full text-center font-clash-semibold rounded-full py-2 border z-20 duration-150 "
+          to={`${_id}`}
+          className="cursor-pointe bg-white hover:bg-yellow w-full text-center font-clash-semibold rounded-full py-3 border z-20 duration-150 "
         >
           View Details
         </Link>

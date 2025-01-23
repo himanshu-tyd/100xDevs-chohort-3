@@ -30,7 +30,7 @@ const LeftPanel = () => {
       </div>
 
       <div
-        className={`min-w-[180px] h-dvh  rounded-md block sm:hidden absolute z-20 duration-200 ${
+        className={`min-w-[180px] h-dvh  rounded-md block sm:hidden absolute z-30 duration-200 ${
           active ? "-translate-x-32  " : "translate-x-0 bg-slate-200"
         } `}
       >

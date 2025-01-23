@@ -39,8 +39,6 @@ export const getAdminCourse = async (req, res) => {
       creatorId: userId,
     });
 
-    console.log(course);
-
     if (course.length < 0) {
       return res.json({ message: "You have not create any course yet!" });
     }
@@ -48,5 +46,25 @@ export const getAdminCourse = async (req, res) => {
     res.json({ success: true, message: "course found", data: course });
   } catch (error) {
     return res.json({ success: false, message: "Intenal server error" });
+  }
+};
+
+export const getSingleCoures = async (req, res) => {
+  const id = req.params["id"];
+  try {
+
+    const couses = await CourseModel.findById(id);
+
+    if (!couses) {
+      return res.json({
+        success: false,
+        message: "this course does not exits",
+      });
+    }
+
+    res.json({ success: true, message: "course found", data: couses });
+  } catch (e) {
+    console.log(e);
+    return res.json({ success: false, message: "internal server error" });
   }
 };
