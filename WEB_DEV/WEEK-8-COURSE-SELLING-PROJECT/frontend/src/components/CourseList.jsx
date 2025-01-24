@@ -6,7 +6,7 @@ const CourseList = () => {
   const { adminCoures, setAdminCourse } = useStore();
   const {data:adminCourseList, error, loading } = useFetch("/api/admin/courses", setAdminCourse , adminCoures);
 
-  console.log(adminCourseList)
+  console.log(adminCoures.length)
 
   if (error) {
     return (
@@ -37,7 +37,7 @@ const CourseList = () => {
 
       <div className="flex flex-col overflow-y-auto  max-h-[448px]   ">
         {!loading ? (
-          adminCourseList.length >= 0 ? (
+          adminCourseList.length > 0 ? (
             adminCourseList?.map((items) => (
               <div
                 key={items?._id}

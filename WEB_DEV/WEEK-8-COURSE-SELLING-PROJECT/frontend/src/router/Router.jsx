@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 import DashBoard from "../sections/DashBoard";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "../pages/Home";
+import PurchaseConfirmation from "../components/PurchaseConfirmation";
 
 const Router = () => {
   const { user } = getContextData();
@@ -23,6 +24,7 @@ const Router = () => {
           <Route path="/dashboard/*" element={<DashBoard />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/purchase-confirm" element={<PurchaseConfirmation />} />          
         </Route>
       </Routes>
     </>

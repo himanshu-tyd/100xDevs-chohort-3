@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFechCourses } from "../hooks/useFetchCourse";
 import { Link, useLocation } from "react-router-dom";
 import Error from "./Error";
 import Loader from "./Loader";
 import {
-  ArrowLeft,
   ChevronLeft,
   Clock,
   DollarSign,
   GraduationCap,
+  Loader2,
 } from "lucide-react";
 import Button from "./Button";
+import usePurchase from "../hooks/usePurchase";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const CourseDetails = () => {
   const location = useLocation();
+  const [checkTime, setcheckTime] = useState(true);
+  const { loading: purchaseLoader, purchaseCourse } = usePurchase();
   const id = location.pathname.split("/")[3];
+  const navigate = useNavigate();
 
   const {
     data: courseData,
@@ -25,6 +31,29 @@ const CourseDetails = () => {
   if (error) {
     return <Error error={error} />;
   }
+
+  let data;
+
+  const handlePruchase = async () => {
+    if (checkTime) {
+      setcheckTime(false);
+      data = await purchaseCourse(courseData?._id);
+    } else {
+      toast.warning("Please wait for 3 seconds before purchasing again");
+    }
+
+    setTimeout(() => {
+      setcheckTime(true);
+    }, 3000);
+
+    if (!data) return;
+
+    console.log(data);
+
+    navigate(`/${data?.creatorId}/purchase-confirm`);
+
+    console.log("controle rich here");
+  };
 
   return (
     <div className="w-full flex flex-col ">
@@ -49,7 +78,7 @@ const CourseDetails = () => {
 
           {/* about couser */}
 
-          <div className="flex-col-reverse lg:flex-row flex  justify-between p-2 md:p-8 ">
+          <div className="flex-col-reverse lg:flex-row flex  justify-between p-2 md:p-8 flex-1 ">
             <div className="px-5 py-3">
               <span className="font-clash-bold text-xl  ">
                 About This Course
@@ -78,7 +107,7 @@ const CourseDetails = () => {
 
             {/* image price  */}
 
-            <div className="flex flex-col w-full gap-5 font-clash-regular ">
+            <div className="flex flex-col gap-5 font-clash-regular  max-w-full lg:max-w-[340px]   ">
               <img src={courseData?.imageUrl} className="rounded-md" />
               <div className="w-full border border-slate-400 px-8 py-3 rounded-md  ">
                 <h3 className="font-clash-semibold text-2xl  ">
@@ -104,7 +133,18 @@ const CourseDetails = () => {
                 </ul>
 
                 <div className="mt-5 w-full">
-                  <Button lable={"Purchase Now "} containerClass={"bg-black text-white rounded-full w-full "}  />
+                  <Button
+                    disabled={loading}
+                    handleClick={handlePruchase}
+                    lable={
+                      purchaseLoader ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        "Purchase Now "
+                      )
+                    }
+                    containerClass={"bg-black text-white rounded-full w-full "}
+                  />
                 </div>
               </div>
             </div>

@@ -2,7 +2,6 @@
 
 import express from "express";
 import {
-  purchase,
   getAllCourse,
   getAdminCourse,
   getSingleCoures,
@@ -15,7 +14,6 @@ import { createCourse } from "../controllers/admin.controller.js";
 const route = express.Router();
 
 route.post("/create", isAuthenticate, createCourse);
-route.post("/purchase", purchase);
 route.get("/", getAllCourse);
 route.get('/:id', getSingleCoures)
 

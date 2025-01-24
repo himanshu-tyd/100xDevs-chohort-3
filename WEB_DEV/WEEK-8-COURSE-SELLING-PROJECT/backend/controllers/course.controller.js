@@ -1,9 +1,6 @@
 import { AdminModel, CourseModel } from "../models/models.js";
 
-export const purchase = (req, res) => {
-  const courseId = req.params["id"];
-  const userId = req.userId;
-};
+
 
 export const getAllCourse = async (req, res) => {
   const courses = await CourseModel.find();

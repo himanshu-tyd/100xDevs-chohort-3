@@ -7,7 +7,6 @@ import {
 import { compareHash, generateHash } from "../utils/helper.js";
 import { GenerateCookie } from "../utils/verify.js";
 
-
 export const signup = async (req, res) => {
   const { email, password, firstName, lastName, role } = req.body;
 
@@ -133,42 +132,54 @@ export const buyCoures = async (req, res) => {
     return res.json({ success: false, message: "something get wrong" });
   }
 
-  const existingCourse = await PurchasedModel.findOne({
-    userId,
-    courseId,
-  });
-
-  if (existingCourse) {
-    return res.json({
-      success: false,
-      message: "You already purchasedd this course",
+  try {
+    const existingCourse = await PurchasedModel.findOne({
+      userId,
+      courseId,
     });
-  }
 
-  const course = await PurchasedModel.create({
-    courseId,
-    userId,
-  });
+    if (existingCourse) {
+      return res.json({
+        success: false,
+        message: "You already purchasedd this course",
+      });
+    }
 
-  if (!course) {
-    return res.json({
-      success: false,
-      message: "failed to buy course somthig get wron",
-      data: course,
+    const course = await PurchasedModel.create({
+      courseId,
+      userId,
+      isPurchased: true,
     });
-  }
 
-  return res.json({
-    success: true,
-    message: "Congratulation you successfully enrolled in course ",
-  });
+    if (!course) {
+      return res.json({
+        success: false,
+        message: "failed to buy course somthig get wrong",
+      });
+    }
+
+    const courseData = await CourseModel.findById(course?.courseId);
+
+    if (!courseData) {
+      return res.json({ success: false, message: "course data not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Congratulation you successfully enrolled in course ",
+      data: courseData,
+    });
+
+  } catch (e) {
+    return res.json({success:false, message:"internal server error"})
+  }
 };
 
 export const updatePassword = async (req, res) => {
   const userId = req.userId;
   const role = req.role;
 
-  console.log(role)
+  console.log(role);
 
   const { current_password, new_password, confirm_password } = req.body;
 
@@ -179,8 +190,7 @@ export const updatePassword = async (req, res) => {
     });
   }
 
-
-   const  user = await UserModel.findOne({ _id: userId });
+  const user = await UserModel.findOne({ _id: userId });
 
   if (!user) {
     return res.json({ success: false, message: "failed to get user" });
