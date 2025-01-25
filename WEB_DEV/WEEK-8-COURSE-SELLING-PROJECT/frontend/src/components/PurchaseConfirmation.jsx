@@ -1,6 +1,7 @@
 import React from "react";
 import WrapperContainer from "./WrapperContainer";
-import { CircleCheckBig, CodeSquare } from "lucide-react";
+import { ChevronLeftIcon, ChevronUpSquareIcon, CircleCheckBig, CodeSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const PurchaseConfirmation = () => {
   return (
@@ -15,6 +16,7 @@ const PurchaseConfirmation = () => {
         <p className="text-slate-700">
           Thank you for your purchase. Your course access is now available.
         </p>
+        <Link to={'/dashboard/purchase'} className="text-[14px] flex gap-3 items-center button-click  "> <ChevronLeftIcon />  Go Back </Link>
       </div>
     </WrapperContainer>
   );

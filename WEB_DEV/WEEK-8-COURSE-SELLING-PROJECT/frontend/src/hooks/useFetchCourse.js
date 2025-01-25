@@ -5,7 +5,7 @@ import useStore from "../zustand/useStore";
 
 export const useFechCourses = (url) => {
   const [data, setData] = useState([]);
-  const { courses, setCourses } = useStore();
+  const { setCourses } = useStore();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 

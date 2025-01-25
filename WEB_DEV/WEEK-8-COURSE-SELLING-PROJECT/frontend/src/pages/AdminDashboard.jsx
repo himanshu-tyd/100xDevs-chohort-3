@@ -2,6 +2,7 @@ import AddCourseDialog from "../components/AddCourseDialog ";
 import CourseList from "../components/CourseList";
 import DashboardHeader from "../components/DashboardHeader";
 import { getContextData } from "../context/AuthContexProvider";
+import Purchase from "./Purchase";
 
 export default function AdminDashboard() {
   const { role } = getContextData();
@@ -19,8 +20,9 @@ export default function AdminDashboard() {
             <CourseList />
           </>
         ) : (
-          <div>
+          <div className="flex overflow-y-hidden h-dvh w-full  md:h-[584px] flex-col  ">
             <h1 className="text-3xl font-bold tracking-tight">My Courses</h1>
+            <Purchase/>
           </div>
         )}
       </main>

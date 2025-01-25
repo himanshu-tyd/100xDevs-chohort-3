@@ -2,13 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const useFetch = (url, setData, data) => {
+export const useFetchPurchase = (url) => {
+  const [data, setData] = useState();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
-    
-    let mounted = true;
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -19,13 +18,9 @@ export const useFetch = (url, setData, data) => {
         if (!context.success) {
           return toast.error(context.message);
         }
-        console.log(context.data);
 
-        if (mounted) {
-          await setData(context.data);
-        }
+         setData(context);
 
-        console.log(context.data)
 
       } catch (error) {
         setError(error.message);
@@ -35,14 +30,9 @@ export const useFetch = (url, setData, data) => {
       }
     };
 
-    
+    fetchData();
 
-
-     fetchData();
-
-     return ()=>mounted=false
-
-  }, []);
+  }, [url]);
 
   return { loading, error, data };
 };

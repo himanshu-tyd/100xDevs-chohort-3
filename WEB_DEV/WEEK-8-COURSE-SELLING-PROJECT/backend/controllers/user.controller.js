@@ -118,8 +118,8 @@ export const myCourse = async (req, res) => {
   });
 
   return res.json({
-    success: false,
-    message: "Course found sucessfully ",
+    success: true,
+    message: "Course found sucessfully",
     data: { courseIds, courseInfo },
   });
 };

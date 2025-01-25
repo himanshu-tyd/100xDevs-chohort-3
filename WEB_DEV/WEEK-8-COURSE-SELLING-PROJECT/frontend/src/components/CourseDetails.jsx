@@ -14,11 +14,13 @@ import Button from "./Button";
 import usePurchase from "../hooks/usePurchase";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { getContextData } from "../context/AuthContexProvider";
 
 const CourseDetails = () => {
   const location = useLocation();
   const [checkTime, setcheckTime] = useState(true);
   const { loading: purchaseLoader, purchaseCourse } = usePurchase();
+  const { role } = getContextData();
   const id = location.pathname.split("/")[3];
   const navigate = useNavigate();
 
@@ -35,6 +37,10 @@ const CourseDetails = () => {
   let data;
 
   const handlePruchase = async () => {
+    if (role === "admin") {
+      return toast.error("You are admin you can not pruchase course.");
+    }
+
     if (checkTime) {
       setcheckTime(false);
       data = await purchaseCourse(courseData?._id);
@@ -48,11 +54,7 @@ const CourseDetails = () => {
 
     if (!data) return;
 
-    console.log(data);
-
-    navigate(`/${data?.creatorId}/purchase-confirm`);
-
-    console.log("controle rich here");
+    navigate(`/dashboard/courses/${data?.creatorId}/purchase-confirm`);
   };
 
   return (
@@ -78,7 +80,7 @@ const CourseDetails = () => {
 
           {/* about couser */}
 
-          <div className="flex-col-reverse lg:flex-row flex  justify-between p-2 md:p-8 flex-1 ">
+          <div className="flex-col-reverse lg:flex-row flex  justify-between p-2 md:p-8  ">
             <div className="px-5 py-3">
               <span className="font-clash-bold text-xl  ">
                 About This Course
@@ -107,8 +109,13 @@ const CourseDetails = () => {
 
             {/* image price  */}
 
-            <div className="flex flex-col gap-5 font-clash-regular  max-w-full lg:max-w-[340px]   ">
-              <img src={courseData?.imageUrl} className="rounded-md" />
+            <div className="flex flex-col gap-5 font-clash-regular lg:w-[340px]   ">
+              <div className="lg:w-[340px] w-full">
+                <img
+                  src={courseData?.imageUrl}
+                  className="rounded-md w-full "
+                />
+              </div>
               <div className="w-full border border-slate-400 px-8 py-3 rounded-md  ">
                 <h3 className="font-clash-semibold text-2xl  ">
                   {" "}
@@ -143,7 +150,9 @@ const CourseDetails = () => {
                         "Purchase Now "
                       )
                     }
-                    containerClass={"bg-black text-white rounded-full w-full "}
+                    containerClass={`text-white rounded-full w-full ${
+                      role === "admin" || loading ? "bg-slate-700" : "bg-black"
+                    }`}
                   />
                 </div>
               </div>
