@@ -4,6 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node --watch ./backend/index.js",
+    "build" : "npm install && install --prefix frontend && npm run build  --prefix frontend  ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
