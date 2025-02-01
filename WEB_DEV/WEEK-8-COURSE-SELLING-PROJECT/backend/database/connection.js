@@ -1,8 +1,11 @@
 import { connect } from "mongoose";
 
 const connectDB = async () => {
+
+  console.log(process.env.MONGO_URI)
+
   try {
-    await connect(process.env.MONGO_URI, {
+     await connect(process.env.MONGO_URI, {
       dbName: "course-ground",
     })
 
