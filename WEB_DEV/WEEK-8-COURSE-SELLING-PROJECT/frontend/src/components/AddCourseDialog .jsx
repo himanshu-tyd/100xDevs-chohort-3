@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Loader2Icon, X } from "lucide-react";
+import { ImagePlus, Loader2Icon, X } from "lucide-react";
 
 import { toast } from "sonner";
 import useCloudnaryUpload from "../hooks/useUploadImage";
-import skeletonImage from "../assets/image.jpg";
 import useAddUpload from "../hooks/useAddCourse";
 
 const AddCourseDialog = () => {
@@ -16,196 +15,182 @@ const AddCourseDialog = () => {
     price: "",
   });
 
-  const { loading, uploadImage } = useCloudnaryUpload();
+  const { loading: imageLoading, uploadImage } = useCloudnaryUpload();
   const { loading: uploadLoading, uploadCours } = useAddUpload();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setData({ ...data, [name]: value });
+    setData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSumit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const result = await uploadCours(data);
-
-    if (!result) return;
-
-    setOpen(false);
+    if (result) setOpen(false);
   };
 
   const handleUploadImage = async (e) => {
-    const file = e.target.files[0];
-
-    const size = parseInt(file.size); //this will return file size in bytes
-
-    if (!file) {
-      toast.error("Please select an image");
-    }
-
-    // if (size > 300 * 1024) {
-    //   return toast.error("image size should be lest than 300kb");
-    // }
+    const file = e.target.files?.[0];
+    if (!file) return toast.error("Please select an image");
 
     const url = await uploadImage(file);
-
-    if (!url) {
-      return toast.error("Failed to get url");
-    }
+    if (!url) return toast.error("Failed to upload image");
 
     setUrl(url);
-    setData({ ...data, imageUrl: url });
-  };
-
-  const handleOpen = () => {
-    setOpen((pre) => !pre);
+    setData(prev => ({ ...prev, imageUrl: url }));
   };
 
   return (
-    <div>
+    <>
       <button
-        className="px-2 py-2 text-sm bg-dark border-2 border-dusty text-white rounded-lg "
-        onClick={handleOpen}
+        onClick={() => setOpen(true)}
+        className="px-6 py-2.5 text-sm bg-dark text-white rounded-lg 
+          border-2 border-dusty hover:bg-dark/90 transition-colors
+          active:scale-95 duration-200"
       >
         Add New Course
       </button>
-      <div className={open ? "block" : "hidden"}>
-        <div
-          className={`w-screen h-screen absolute top-0 left-0 flex-center bg-dark bg-opacity-70 backdrop-blur-sm overflow-hidden transition-all`}
-        >
-          <form
-            onSubmit={handleSumit}
-            className="min-w-auto sm:max-w-[600px]  p-4 bg-white rounded-lg"
-          >
-            <div className="flex items-center justify-between w-full ">
-              <div className="w-full">
-                <h3
-                  className="text-md font-semibold text-black "
-                  onClick={handleOpen}
-                >
-                  Add New Course
-                </h3>
-                <span className="text-sm text-slate-600">
-                  Fill in the course details. Click save when you're done.
-                </span>
-              </div>
-              <div
-                onClick={handleOpen}
-                className="bg-yellow rounded-full cursor-pointer  p-2 hover:scale-105 active:scale-100  duration-150 border-gray border    "
-              >
-                <X className="w-4 h-4" />
-              </div>
-            </div>
 
-            {/* inputs section */}
+      {/* Modal Overlay */}
+      {open && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full animate-in fade-in duration-200">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              {/* Header */}
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-xl font-clash-semibold text-slate-900">
+                    Add New Course
+                  </h3>
+                  <p className="text-sm text-slate-500 mt-1">
+                    Fill in the course details. Click save when you're done.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-            <div className="mt-4 flex flex-col gap-4 ">
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="title"
-                  className="text-black text-sm  font-semibold "
-                >
-                  Title
-                </label>
-                <input
-                  id="title"
-                  required
-                  onChange={handleChange}
-                  name="title"
-                  type="text"
-                  placeholder="Enter course name"
-                  className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="desc"
-                  className="text-black text-sm  font-semibold "
-                >
-                  Description
-                </label>
-                <textarea
-                  required
-                  onChange={handleChange}
-                  id="desc"
-                  name="desc"
-                  type="text"
-                  placeholder="Enter course description"
-                  className="input-style h-[120px] placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="image"
-                  className="text-black text-sm  font-semibold "
-                >
-                  Image
-                </label>
-                <input
-                  required
-                  onChange={handleUploadImage}
-                  id="image"
-                  name="image"
-                  type="file"
-                  placeholder="upload image"
-                  className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
-                />
-                <div className="w-full h-20 rounded-md bg-slate-100 flex items-center justify-center ">
-                  {loading ? (
-                    <Loader2Icon className="animate-spin" />
-                  ) : (
-                    <img
-                      src={url == "" ? skeletonImage : url}
-                      className="w-full h-full object-cover rounded-md "
+              {/* Form Fields */}
+              <div className="space-y-4">
+                <div className="form-group">
+                  <label htmlFor="title">Course Title</label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    required
+                    placeholder="Enter course name"
+                    onChange={handleChange}
+                    className="input-field"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="desc">Description</label>
+                  <textarea
+                    id="desc"
+                    name="desc"
+                    required
+                    rows={4}
+                    placeholder="Enter course description"
+                    onChange={handleChange}
+                    className="input-field resize-none"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="image">Course Image</label>
+                  <div className="mt-1 flex items-center gap-4">
+                    <input
+                      id="image"
+                      name="image"
+                      type="file"
+                      required
+                      accept="image/*"
+                      onChange={handleUploadImage}
+                      className="hidden"
                     />
-                  )}
+                    <label 
+                      htmlFor="image"
+                      className="flex items-center gap-2 px-4 py-2 border-2 border-dashed 
+                        border-slate-300 rounded-lg hover:border-yellow cursor-pointer
+                        text-slate-600 hover:text-slate-900 transition-colors"
+                    >
+                      <ImagePlus className="w-5 h-5" />
+                      <span>Choose Image</span>
+                    </label>
+                    
+                    {/* Image Preview */}
+                    <div className="relative w-20 h-20 rounded-lg bg-slate-100 overflow-hidden">
+                      {imageLoading ? (
+                        <div className="absolute inset-0 flex-center">
+                          <Loader2Icon className="w-6 h-6 animate-spin text-yellow" />
+                        </div>
+                      ) : (
+                        url && (
+                          <img
+                            src={url}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="price">Price (₹)</label>
+                  <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    required
+                    min="0"
+                    placeholder="Enter course price"
+                    onChange={handleChange}
+                    className="input-field"
+                  />
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="price"
-                  className="text-black text-sm  font-semibold "
-                >
-                  Price
-                </label>
-                <input
-                  required
-                  onChange={handleChange}
-                  id="price"
-                  name="price"
-                  type="number"
-                  placeholder="$ Price"
-                  className="input-style placeholder:text-gray border-gray border-[1px] placeholder:text-sm  "
-                />
-              </div>
-            </div>
 
-            {/* action buttons */}
-            <div className="mt-5 ">
-              <div className="flex gap-2 justify-end ">
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t">
                 <button
-                  className="button-click px-4 py-2 text-sm bg-transparent border-2 border-dusty text-dark rounded-lg "
+                  type="button"
                   onClick={() => setOpen(false)}
+                  className="px-4 py-2 text-sm font-medium text-slate-700 
+                    hover:bg-slate-100 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className=" button-click px-8 py-2 text-sm bg-dark border-2 border-dusty text-white rounded-lg "
+                  disabled={uploadLoading}
+                  className="px-6 py-2 text-sm font-medium text-white bg-dark 
+                    rounded-lg hover:bg-dark/90 transition-colors disabled:opacity-50
+                    disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {uploadLoading ? (
-                    <Loader2Icon className="w-auto animate-spin  " />
+                    <>
+                      <Loader2Icon className="w-4 h-4 animate-spin" />
+                      <span>Saving...</span>
+                    </>
                   ) : (
-                    "Save"
+                    'Save Course'
                   )}
                 </button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFechCourses } from "../hooks/useFetchCourse";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Error from "./Error";
 import Loader from "./Loader";
 import {
-  ChevronLeft,
+  ArrowLeft,
   Clock,
   DollarSign,
   GraduationCap,
   Loader2,
+  ShieldCheck,
 } from "lucide-react";
 import Button from "./Button";
 import usePurchase from "../hooks/usePurchase";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { getContextData } from "../context/AuthContexProvider";
 
 const CourseDetails = () => {
   const location = useLocation();
-  const [checkTime, setcheckTime] = useState(true);
+  const [checkTime, setCheckTime] = useState(true);
   const { loading: purchaseLoader, purchaseCourse } = usePurchase();
   const { role } = getContextData();
   const id = location.pathname.split("/")[3];
@@ -30,138 +30,142 @@ const CourseDetails = () => {
     loading,
   } = useFechCourses(`/api/course/${id}`);
 
-  if (error) {
-    return <Error error={error} />;
-  }
+  if (error) return <Error error={error} />;
 
-  let data;
-
-  const handlePruchase = async () => {
+  const handlePurchase = async () => {
     if (role === "admin") {
-      return toast.error("You are admin you can not pruchase course.");
+      return toast.error("Administrators cannot purchase courses");
     }
 
-    if (checkTime) {
-      setcheckTime(false);
-      data = await purchaseCourse(courseData?._id);
-    } else {
-      toast.warning("Please wait for 3 seconds before purchasing again");
+    if (!checkTime) {
+      return toast.warning("Please wait for 3 seconds before trying again");
     }
 
-    setTimeout(() => {
-      setcheckTime(true);
-    }, 3000);
-
-    if (!data) return;
-
-    navigate(`/dashboard/courses/${data?.creatorId}/purchase-confirm`);
+    setCheckTime(false);
+    const data = await purchaseCourse(courseData?._id);
+    
+    setTimeout(() => setCheckTime(true), 3000);
+    
+    if (data) {
+      navigate(`/dashboard/courses/${data?.creatorId}/purchase-confirm`);
+    }
   };
 
+  if (loading) return <Loader />;
+
   return (
-    <div className="w-full flex flex-col ">
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="flex flex-col w-full">
-          {/* title */}
-          <header className="w-full flex-col gap-2 h-[140px] bg-slate-950 flex justify-center px-10 ">
-            <button
-              onClick={() => window.history.back()}
-              className="text-slate-500 flex items-center gap-2 group hover:text-slate-400 transition-all "
-            >
-              {" "}
-              <ChevronLeft className=" w-5 h-5  inline-block font-clash-regular group-hover:-translate-x-1 duration-150 " />{" "}
-              Back to Courses
-            </button>
-            <h3 className="text-white text-xl  md:text-2xl font-clash-semibold  ">
-              {courseData?.title}
-            </h3>
-          </header>
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero Section */}
+      <header className="bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Courses
+          </button>
+          
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-clash-semibold leading-tight">
+            {courseData?.title}
+          </h1>
+        </div>
+      </header>
 
-          {/* about couser */}
-
-          <div className="flex-col-reverse lg:flex-row flex  justify-between p-2 md:p-8  ">
-            <div className="px-5 py-3">
-              <span className="font-clash-bold text-xl  ">
-                About This Course
-              </span>
-              <p className="font-clash-light  text-[14px] text-gray  ">
+      {/* Course Content */}
+      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Course Info */}
+          <div className="lg:col-span-2 space-y-8">
+            <section className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl font-clash-semibold mb-4">About This Course</h2>
+              <p className="text-slate-600 leading-relaxed">
                 {courseData?.desc}
               </p>
+            </section>
 
-              <div className="flex flex-col mt-5 gap-2">
-                <span className="font-clash-semibold font-xl">
-                  You Instructor
-                </span>
-                <div className="flex gap-4 w-full ">
-                  <img
-                    src="https://yt3.googleusercontent.com/C25u3DcSguL-wd3GaO110Q1fyO5ClTraTjtF72kJhZtpQwuAv3zLmb7K-ZLJecQQJBVvP1McmA=s900-c-k-c0x00ffffff-no-rj"
-                    height={50}
-                    width={50}
-                  />
-                  <div className="flex flex-col font-clash-regular">
-                    <span className=" ">Harkirat</span>
-                    <p className="text-slate-700 ">Senior Software Engineer</p>
-                  </div>
+            <section className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl font-clash-semibold mb-4">Your Instructor</h2>
+              <div className="flex items-start gap-4">
+                <img
+                  src="https://yt3.googleusercontent.com/C25u3DcSguL-wd3GaO110Q1fyO5ClTraTjtF72kJhZtpQwuAv3zLmb7K-ZLJecQQJBVvP1McmA=s900-c-k-c0x00ffffff-no-rj"
+                  alt="Instructor"
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div>
+                  <h3 className="font-clash-semibold text-lg">Harkirat Singh</h3>
+                  <p className="text-slate-600">Senior Software Engineer</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    Experienced instructor with expertise in full-stack development and system design.
+                  </p>
                 </div>
               </div>
-            </div>
+            </section>
+          </div>
 
-            {/* image price  */}
+          {/* Purchase Card */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 bg-white rounded-2xl shadow-sm overflow-hidden">
+              <img
+                src={courseData?.imageUrl}
+                alt={courseData?.title}
+                className="w-full h-48 object-cover"
+              />
+              
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-3xl font-clash-semibold">
+                    ₹{courseData?.price}
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    One-time purchase, lifetime access
+                  </p>
+                </div>
 
-            <div className="flex flex-col gap-5 font-clash-regular lg:w-[340px]   ">
-              <div className="lg:w-[340px] w-full">
-                <img
-                  src={courseData?.imageUrl}
-                  className="rounded-md w-full "
-                />
-              </div>
-              <div className="w-full border border-slate-400 px-8 py-3 rounded-md  ">
-                <h3 className="font-clash-semibold text-2xl  ">
-                  {" "}
-                  &#8377; {courseData?.price}
-                </h3>
-                <p className="text-[12px] text-gray ">
-                  One-time purchase, lifetime access
-                </p>
-                <ul className="space-y-2 text-sm mt-5">
-                  <li className="flex items-center">
-                    <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <span>1 Year</span>
-                  </li>
-                  <li className="flex items-center">
-                    <GraduationCap className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <span>Advance</span>
-                  </li>
-                  <li className="flex items-center">
-                    <DollarSign className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <span>30-day money-back guarantee</span>
-                  </li>
+                <ul className="space-y-4">
+                  {courseFeatures.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-3 text-slate-700">
+                      {feature.icon}
+                      <span className="text-sm">{feature.text}</span>
+                    </li>
+                  ))}
                 </ul>
 
-                <div className="mt-5 w-full">
-                  <Button
-                    disabled={loading}
-                    handleClick={handlePruchase}
-                    lable={
-                      purchaseLoader ? (
-                        <Loader2 className="animate-spin" />
-                      ) : (
-                        "Purchase Now "
-                      )
-                    }
-                    containerClass={`text-white rounded-full w-full ${
-                      role === "admin" || loading ? "bg-slate-700" : "bg-black"
-                    }`}
-                  />
-                </div>
+                <Button
+                  disabled={loading || role === "admin"}
+                  handleClick={handlePurchase}
+                  lable={purchaseLoader ? <Loader2 className="animate-spin" /> : "Purchase Now"}
+                  containerClass={`w-full justify-center bg-yellow hover:bg-yellow/90 
+                    text-slate-900 font-medium rounded-xl py-3 ${
+                    (role === "admin" || loading) && "opacity-50 cursor-not-allowed"
+                  }`}
+                />
               </div>
             </div>
           </div>
         </div>
-      )}
+      </main>
     </div>
   );
 };
+
+const courseFeatures = [
+  {
+    icon: <Clock className="w-5 h-5 text-slate-400" />,
+    text: "1 Year of Access",
+  },
+  {
+    icon: <GraduationCap className="w-5 h-5 text-slate-400" />,
+    text: "Advanced Level Course",
+  },
+  {
+    icon: <ShieldCheck className="w-5 h-5 text-slate-400" />,
+    text: "30-day Money-back Guarantee",
+  },
+  {
+    icon: <DollarSign className="w-5 h-5 text-slate-400" />,
+    text: "One-time Payment",
+  },
+];
 
 export default CourseDetails;

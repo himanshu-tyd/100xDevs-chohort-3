@@ -70,7 +70,7 @@
 }
 
 .flex-center {
-  @apply justify-center flex  items-center;
+  @apply flex items-center justify-center;
 }
 
 .input-style {
@@ -84,4 +84,34 @@
 
 .max-width{
   @apply   w-[128px] md:w-[148px];
+}
+
+.form-group {
+  @apply flex flex-col gap-1.5;
+}
+
+.form-group label {
+  @apply text-sm font-medium text-slate-700;
+}
+
+.input-field {
+  @apply w-full px-4 py-2.5 text-sm text-slate-900 rounded-lg
+    border border-slate-300 focus:border-yellow focus:ring-2 
+    focus:ring-yellow/20 outline-none transition-all
+    placeholder:text-slate-400;
+}
+
+.animate-in {
+  animation: animate-in 0.2s ease-out;
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
