@@ -1,4 +1,4 @@
-import {z} from 'zod'
+import {string, z} from 'zod'
 
 
 
@@ -16,7 +16,14 @@ export const passwordValidation = z
   });
 
 
-export const signupSchema=z.object({
+export const userSchema=z.object({
     username:z.string().min(3,{message:userNameMin}).max(10,{message:userNameMax}),
     password:passwordValidation
+})
+
+export const contentSchema=z.object({
+    type:z.enum(['document', 'tweet', 'youtube', 'link']),
+    link:z.string(),
+    title:z.string(),
+    tags: z.string().array()
 })
